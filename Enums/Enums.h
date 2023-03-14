@@ -55,4 +55,4 @@ enum Border
 
 enum MenuLetters { P = 'P', C = 'C', E = 'E' };
 
-enum MenuWords {PLAY = 31, CREATORS = 32, EXIT = 33}; // words protect
+enum MenuWords {PLAY = 31, CREATORS = 32, EXIT = 33}; // words protect 
