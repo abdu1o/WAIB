@@ -1,7 +1,7 @@
 #pragma once
 enum Color
 {
-	BLACKK = 0,
+	BLACK = 0,
 	DARKBLUE = 1,
 	DARKGREEN = 2,
 	DARKCYAN = 3,
