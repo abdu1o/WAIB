@@ -5,15 +5,14 @@ class Move
 {
 private:
 	char emoji;
-	COORD Cursor;
+	COORD Cursor {};
 
 public:
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	Move(char _emoji, COORD _Cursor, int x, int y) // êîíñòðóêòîð 
+	Move(char _emoji, int x, int y) 
 	{
 		this->emoji = _emoji;
-		this->Cursor = _Cursor;
 		Cursor.X = x;
 		Cursor.Y = y;
 	}
@@ -47,6 +46,16 @@ public:
 	}
 	void MoveLeft()
 	{
-		Cursor.X++;
+		Cursor.X--;
 	}
+
+	short GetY()
+	{
+		return Cursor.Y;
+	}
+	short GetX()
+	{
+		return Cursor.X;
+	}
+
 };
