@@ -11,15 +11,15 @@ private:
     static const int HEIGHT = 11;
     int menu_box[HEIGHT][WIDTH] = {};
     HANDLE h;
+    COORD menu;
 
 public:
 
     Menu() 
     {
         h = GetStdHandle(STD_OUTPUT_HANDLE);
-        COORD menu;
-        menu.X = 17;
-        menu.Y = 3;
+        this->menu.X = 17;
+        this->menu.Y = 3;
 
 
         for (int y = 0; y < HEIGHT; y++) 
@@ -115,6 +115,8 @@ public:
             }
         }
     }
+
+    
 
     void Show() 
     {
@@ -267,16 +269,14 @@ public:
 
 
                 else if (code == KeyCode::RIGHT && menu_box[player.GetY()][player.GetX() + 1] != Border::BORDER_LEFT_RIGHT &&
-                    //no eating letters
-                    menu_box[player.GetY()][player.GetX() + 1] != P && menu_box[player.GetY()][player.GetX() + 1] != 7 &&
-                    menu_box[player.GetY()][player.GetX() + 1] != C && menu_box[player.GetY()][player.GetX() + 1] != 8 &&
-                    menu_box[player.GetY()][player.GetX() + 1] != E && menu_box[player.GetY()][player.GetX() + 1] != 9 &&
+                    //no eating words 
+                    menu_box[player.GetY()][player.GetX() + 1] != 7 &&
+                    menu_box[player.GetY()][player.GetX() + 1] != 8 &&
+                    menu_box[player.GetY()][player.GetX() + 1] != 9 &&
                     menu_box[player.GetY()][player.GetX() + 1] != MenuWords::PLAY && menu_box[player.GetY()][player.GetX() + 1] != MenuWords::CREATORS && menu_box[player.GetY()][player.GetX() + 1] != MenuWords::EXIT)
                 {
                     player.MoveRight();
                 }
-
-
 
                 //set new coord---------------------------
                 player.SetPosition();
@@ -284,7 +284,47 @@ public:
                 player.PrintEmoji();
                 
 
+                //letter movement-------------------------
+                menu.X = 17;
+                menu.Y = 3;
+                Menu obj;
+
+                //P
+                if (menu_box[player.GetY()][player.GetX()] == menu_box[menu.Y][menu.X])
+                {
+                    obj.LetterMove('P', menu.X += 1, menu.Y);
+                    break;
+                    //transition to level
+                }
+
+                //C
+                if (menu_box[player.GetY()][player.GetX()] == menu_box[menu.Y + 2][menu.X])
+                {
+                    obj.LetterMove('C', menu.X += 1, menu.Y += 2);
+                    break;
+                    //transition to level
+                }
+
+                //E
+                if (menu_box[player.GetY()][player.GetX()] == menu_box[menu.Y + 4][menu.X])
+                {
+                    obj.LetterMove('E', menu.X += 1, menu.Y += 4);
+                    break;
+                    //transition to level
+                }
             }
         }
+
+        while(true){} //for tests
     }
+
+    void LetterMove(char ch, int X, int Y)
+    {
+        SetConsoleTextAttribute(h, WHITE);
+        menu.X = X;
+        menu.Y = Y;
+        SetConsoleCursorPosition(h, menu);
+        cout << ch;
+    }
+    
 };
