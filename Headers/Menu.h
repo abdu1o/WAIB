@@ -301,16 +301,29 @@ public:
                 if (menu_box[player.GetY()][player.GetX()] == menu_box[menu.Y + 2][menu.X])
                 {
                     obj.LetterMove('C', menu.X += 1, menu.Y += 2);
-                    break;
-                    //transition to level
+                    system("start https://github.com/abdu1o");
+                    system("start https://github.com/MX322");
+                    system("start https://github.com/eleonoraisaiko");
+                    system("cls");
+                    Show();
                 }
 
                 //E
                 if (menu_box[player.GetY()][player.GetX()] == menu_box[menu.Y + 4][menu.X])
                 {
                     obj.LetterMove('E', menu.X += 1, menu.Y += 4);
-                    break;
-                    //transition to level
+                    int choice = MessageBoxA(0, "\tAre you sure want to exit?", "Birds do not exist", MB_YESNO);
+
+                    if (choice == IDYES)
+                    {
+                        system("cls");
+                        exit(0);
+                    }
+                    else
+                    {
+                        system("cls");
+                        Show();
+                    }
                 }
             }
         }
