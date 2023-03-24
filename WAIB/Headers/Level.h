@@ -14,7 +14,7 @@ private:
 
     static const int EndWIDTH = WIDTH - 1;
     static const int EndHEIGHT = HEIGHT - 1;
-
+     
 
     int menu_box[HEIGHT][WIDTH] = {};
 
@@ -23,7 +23,7 @@ private:
 
 public:
 
-    LevelMap()
+    LevelMap()  
     {
         h = GetStdHandle(STD_OUTPUT_HANDLE);
         this->menu.X = 1;
