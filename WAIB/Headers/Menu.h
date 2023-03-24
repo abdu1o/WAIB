@@ -7,9 +7,17 @@ class Menu
 
 private:
 
-    static const int WIDTH = 40;
+    static const int WIDTH = 28;
     static const int HEIGHT = 11;
+
+    static const int StartWIDTH = 13;
+    static const int StartHEIGHT = 1;
+
+    static const int EndWIDTH = WIDTH - 1;
+    static const int EndHEIGHT = HEIGHT - 1;
+
     int menu_box[HEIGHT][WIDTH] = {};
+
     HANDLE h;
     COORD menu;
 
@@ -77,35 +85,37 @@ public:
 
 
                 //BORDERS=============================================================================
-                else if (y == 1 && x >= 14 && x <= 28 || y == 10 && x >= 14 && x <= 28)
-                {
-                    menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
-                }
 
-                else if (y >= 2 && x == 13 && y <= 9 || y >= 2 && x == 29 && y <= 9 ) 
-                {
-                    menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
-                }
-
-                else if (y == 1 && x == 13)
+                else if (y == StartHEIGHT && x == StartWIDTH)
                 {
                     menu_box[y][x] = Border::CORNER_01; // corner 1
                 }
 
-                else if (y == 1 && x == 29)
+                else if (y == StartHEIGHT && x == EndWIDTH)
                 {
                     menu_box[y][x] = Border::CORNER_02; // corner 2
                 }
 
-                else if (y == 10 && x == 29)
+                else if (y == EndHEIGHT && x == EndWIDTH)
                 {
                     menu_box[y][x] = Border::CORNER_03; // corner 3
                 }
 
-                else if (y == 10 && x == 13)
+                else if (y == EndHEIGHT && x == StartWIDTH)
                 {
                     menu_box[y][x] = Border::CORNER_04; // corner 4
                 }
+
+                else if (y == StartHEIGHT && x >= StartWIDTH && x <= EndWIDTH || y == EndHEIGHT && x >= StartWIDTH && x <= EndWIDTH)
+                {
+                    menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
+                }
+
+                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndHEIGHT || y >= StartHEIGHT && x == EndWIDTH && y <= EndWIDTH )
+                {
+                    menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
+                }
+
                 //====================================================================================
 
                 else 
@@ -286,7 +296,7 @@ public:
 
                 //letter movement-------------------------
                 menu.X = 17;
-                menu.Y = 3;
+                menu.Y = 3; 
                 Menu obj;
 
                 //P
