@@ -1,5 +1,6 @@
 #include "Headers/Global.h"
 #include "Headers/Move.h"
+#include "ShowKeeper.h"
 
 class Menu 
 {
@@ -326,6 +327,7 @@ public:
             }
         }
         system("cls");
+
     }
 
     void LetterMove(char ch, int X, int Y)
