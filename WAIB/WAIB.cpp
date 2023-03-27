@@ -1,12 +1,12 @@
 ﻿#include "Headers/Global.h"
-#include "Headers/Menu.h"
+#include "Headers/GameManager.h"
+#include "Headers/ShowKeeper.h"
 
 int main()
 {
-	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     system("title WAIB");
     
-	MoveWindow(GetConsoleWindow(), 150, 50, 400, 320, true);
+	MoveWindow(GetConsoleWindow(), 150, 50, 650, 500, true);
 
 	CONSOLE_FONT_INFOEX font;
 
@@ -23,6 +23,5 @@ int main()
 	cursor.dwSize = 1;
 	SetConsoleCursorInfo(h, &cursor);
 
-	Menu menu;
-	menu.Show();
+	Start();
 }

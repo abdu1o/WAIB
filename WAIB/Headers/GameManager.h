@@ -7,7 +7,7 @@ DWORD WINAPI Music_Menu(void* param)
 	return 0;
 }
 
-void Start()
+void Start() 
 {
 	CreateThread(0, 0, Music_Menu, 0, 0, 0);
 
