@@ -1,6 +1,6 @@
 #include "Headers/Global.h"
 #include "Headers/Move.h"
-#include "Enums/Enums.h"
+#include "ShowKeeper.h"
 
 class Menu 
 {
@@ -30,7 +30,7 @@ public:
                 //Play
                 if (y == menu.Y && x == menu.X)
                 {
-                    menu_box[y][x] = MenuLetters::P; 
+                    menu_box[y][x] = Alphabet::P;
                 }
 
                 else if (y == menu.Y && x == menu.X + 2)
@@ -46,7 +46,7 @@ public:
                 //Creators
                 else if (y == menu.Y + 2 && x == menu.X)
                 {
-                    menu_box[y][x] = MenuLetters::C;
+                    menu_box[y][x] = Alphabet::C;
                 }
 
                 else if (y == menu.Y + 2 && x == menu.X + 2)
@@ -62,7 +62,7 @@ public:
                 //Exit
                 else if (y == menu.Y + 4 && x == menu.X)
                 {
-                    menu_box[y][x] = MenuLetters::E;
+                    menu_box[y][x] = Alphabet::E;
                 }
 
                 else if (y == menu.Y + 4 && x == menu.X + 2)
@@ -167,7 +167,7 @@ public:
                     break;
 
 
-                case MenuLetters::P: 
+                case Alphabet::P: 
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "P";
                     break;
@@ -179,7 +179,7 @@ public:
                     break;
 
 
-                case MenuLetters::C:
+                case Alphabet::C:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "C";
                     break;
@@ -191,7 +191,7 @@ public:
                     break;
 
 
-                case MenuLetters::E:
+                case Alphabet::E:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "E";
                     break;
@@ -294,7 +294,6 @@ public:
                 {
                     obj.LetterMove('P', menu.X += 1, menu.Y);
                     break;
-                    //transition to level
                 }
 
                 //C
@@ -327,8 +326,8 @@ public:
                 }
             }
         }
+        system("cls");
 
-        while(true){} //for tests
     }
 
     void LetterMove(char ch, int X, int Y)
@@ -338,6 +337,6 @@ public:
         menu.Y = Y;
         SetConsoleCursorPosition(h, menu);
         cout << ch;
+        Sleep(100); //without this letter won`t visually move
     }
-    
 };

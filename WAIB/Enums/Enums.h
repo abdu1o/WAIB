@@ -51,8 +51,34 @@ enum Border
 	_EMPTY = 255
 };
 
-
-
-enum MenuLetters { P = 'P', C = 'C', E = 'E' };
+enum Alphabet 
+{ 
+	A = 'A',
+	B = 'B',
+	C = 'C',
+	D = 'D',
+	E = 'E',
+	F = 'F',
+	G = 'G',
+	H = 'H',
+	I = 'I',
+	J = 'J',
+	K = 'K',
+	L = 'L',
+	M = 'M',
+	N = 'N',
+	O = 'O',
+	P = 'P',
+	Q = 'Q',
+	R = 'R',
+	S = 'S',
+	T = 'T',
+	U = 'U',
+	V = 'V',
+	W = 'W',
+	X = 'X',
+	Y = 'Y',
+	Z = 'Z',
+};
 
 enum MenuWords {PLAY = 31, CREATORS = 32, EXIT = 33}; // words protect 
