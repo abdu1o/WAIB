@@ -6,7 +6,7 @@ int main()
 {
     system("title WAIB");
     
-	MoveWindow(GetConsoleWindow(), 150, 50, 650, 500, true);
+	MoveWindow(GetConsoleWindow(), 150, 50, 1500, 1000, true);
 
 	CONSOLE_FONT_INFOEX font;
 

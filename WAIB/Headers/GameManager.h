@@ -15,6 +15,10 @@ void Start()
 	Menu menu;
 	menu.Show();
 
+	//personal console window settings for each computer
+	//change by needed
+	MoveWindow(GetConsoleWindow(), 150, 50, 1500, 1000, true);
+
 	LevelMap map;
 	map.Show();
 }
