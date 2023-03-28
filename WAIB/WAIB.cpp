@@ -1,6 +1,5 @@
 ﻿#include "Headers/Global.h"
 #include "Headers/GameManager.h"
-#include "Headers/ShowKeeper.h"
 
 int main()
 {
@@ -23,5 +22,5 @@ int main()
 	cursor.dwSize = 1;
 	SetConsoleCursorInfo(h, &cursor);
 
-	Start();
+	GameManager();
 }

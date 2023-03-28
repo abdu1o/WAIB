@@ -1,5 +1,6 @@
-#include "Headers/Global.h"
-#include "Headers/Menu.h"
+#include "Global.h"
+#include "Menu.h"
+#include "Level.h"
 
 DWORD WINAPI Music_Menu(void* param)
 {
@@ -7,10 +8,13 @@ DWORD WINAPI Music_Menu(void* param)
 	return 0;
 }
 
-void Start() 
+void GameManager() 
 {
 	CreateThread(0, 0, Music_Menu, 0, 0, 0);
 
 	Menu menu;
 	menu.Show();
+
+	LevelMap map;
+	map.Show();
 }

@@ -1,4 +1,5 @@
 #include "Global.h"
+#include "Enums.h"
 
 void ShowKeeper()
 {

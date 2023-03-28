@@ -1,6 +1,6 @@
-#include "Headers/Global.h"
-#include "Headers/Move.h"
-#include "ShowKeeper.h"
+#include "Global.h"
+#include "Move.h"
+#include "Enums/Enums.h"
 
 class Menu 
 {

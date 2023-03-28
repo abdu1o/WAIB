@@ -1,3 +1,2 @@
 ﻿  WAIB.cpp
-E:\Шкила\Шаг\C++\WAIB\WAIB\Headers\ShowKeeper.h(3,6): error C2084: функция "void ShowKeeper(void)" уже имеет текст реализации
-E:\Шкила\Шаг\C++\WAIB\WAIB\Headers\ShowKeeper.h(3,6): message : см. предыдущее определение "ShowKeeper"
+  WAIB.vcxproj -> E:\Шкила\Шаг\C++\WAIB\x64\Debug\WAIB.exe
