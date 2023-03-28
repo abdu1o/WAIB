@@ -81,4 +81,15 @@ enum Alphabet
 	Z = 'Z',
 };
 
+enum LevelBox
+{
+	LEVEL_BORDER_UP_DOWN = 301,
+	LEVEL_BORDER_LEFT_RIGHT = 302,
+	LEVEL_CORNER_01 = 303,
+	LEVEL_CORNER_02 = 304,
+	LEVEL_CORNER_03 = 305,
+	LEVEL_CORNER_04 = 306,
+
+};
+
 enum MenuWords {PLAY = 31, CREATORS = 32, EXIT = 33}; // words protect 

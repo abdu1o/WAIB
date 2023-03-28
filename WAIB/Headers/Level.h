@@ -1,6 +1,6 @@
 #include "Global.h"
-#include "Enums/Enums.h"
-#include "Headers/Move.h"
+#include "Enums.h"
+#include "Move.h"
 
 
 class LevelMap

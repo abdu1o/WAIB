@@ -1,5 +1,6 @@
-#include "Headers/Global.h"
-#include "Headers/Menu.h"
+#include "Global.h"
+#include "Menu.h"
+#include "Level.h"
 
 DWORD WINAPI Music_Menu(void* param)
 {
@@ -13,4 +14,7 @@ void Start()
 
 	Menu menu;
 	menu.Show();
+
+	LevelMap map;
+	map.Show();
 }
