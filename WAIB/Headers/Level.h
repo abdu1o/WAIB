@@ -10,10 +10,10 @@ private:
     static const int WIDTH = 67;
     static const int HEIGHT = 23;
 
-    static const int StartWIDTH = 10;
+    static const int StartWIDTH = 2;
     static const int StartHEIGHT = 2;
 
-    static const int EndWIDTH = WIDTH - 1;
+    static const int EndWIDTH = WIDTH - 9;
     static const int EndHEIGHT = HEIGHT - 1;
      
 
@@ -37,7 +37,7 @@ public:
             {
 
                 //BORDERS=============================================================================
-                if (y == StartHEIGHT && x == StartWIDTH)
+                if (y == StartHEIGHT && x == StartWIDTH )
                 {
                      menu_box[y][x] = Border::CORNER_01; // corner 1
                 }

@@ -8,8 +8,6 @@ int main()
     
 	MoveWindow(GetConsoleWindow(), 150, 50, 1500, 1000, true);
 
-	CONSOLE_FONT_INFOEX font;
-
 	font.cbSize = sizeof(font);
 	font.dwFontSize.Y = 60;
 	font.FontFamily = FF_MODERN;
