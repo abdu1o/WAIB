@@ -15,7 +15,7 @@ private:
 
     static const int EndWIDTH = WIDTH - 9;
     static const int EndHEIGHT = HEIGHT - 1;
-
+     
 
     int menu_box[HEIGHT][WIDTH] = {};
 
@@ -24,7 +24,7 @@ private:
 
 public:
 
-    LevelMap()
+    LevelMap()  
     {
         h = GetStdHandle(STD_OUTPUT_HANDLE);
         this->menu.X = 1;
@@ -39,22 +39,22 @@ public:
                 //BORDERS=============================================================================
                 if (y == StartHEIGHT && x == StartWIDTH)
                 {
-                    menu_box[y][x] = Border::CORNER_01; // corner 1
+                     menu_box[y][x] = Border::CORNER_01; // corner 1
                 }
 
                 else if (y == StartHEIGHT && x == EndWIDTH)
                 {
-                    menu_box[y][x] = Border::CORNER_02; // corner 2
+                  menu_box[y][x] = Border::CORNER_02; // corner 2
                 }
 
                 else if (y == EndHEIGHT && x == EndWIDTH)
                 {
-                    menu_box[y][x] = Border::CORNER_03; // corner 3
+                   menu_box[y][x] = Border::CORNER_03; // corner 3
                 }
 
                 else if (y == EndHEIGHT && x == StartWIDTH)
                 {
-                    menu_box[y][x] = Border::CORNER_04; // corner 4
+                   menu_box[y][x] = Border::CORNER_04; // corner 4
                 }
 
                 else if (y == StartHEIGHT && x >= StartWIDTH && x <= EndWIDTH || y == EndHEIGHT && x >= StartWIDTH && x <= EndWIDTH)
@@ -66,7 +66,7 @@ public:
                 {
                     menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
                 }
-
+               
                 //====================================================================================
 
                 else
@@ -118,7 +118,7 @@ public:
                         menu_box[y][x] = 100 + steps + 1;
                     }
 
-                    steps++;
+                    steps++;   
 
 
                     if (steps % 3 == 0)
@@ -127,10 +127,10 @@ public:
                         box_X = -10;
                     }
 
-
+                    
                 }
-
-
+                
+               
             }
         }
     }
@@ -185,7 +185,7 @@ public:
                     cout << (char)Border::_CORNER_04;
                     break;
 
-                    // LEVEL =========================================
+                // LEVEL =========================================
 
                 case LevelBox::LEVEL_BORDER_LEFT_RIGHT:
                     SetConsoleTextAttribute(h, DARKGRAY);
@@ -266,7 +266,7 @@ public:
                 }
             }
             cout << "\n";
-        }
+        } 
         cout << "\n";
 
         // Movement ====================================================

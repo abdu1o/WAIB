@@ -1,8 +1,8 @@
 #include "Global.h"
 #include "Menu.h"
-#include "Level.h"
-#include "WordKeeper.h"
 #include "ConsoleSetter.h"
+#include "WordKeeper.h"
+#include "Level.h"
 
 DWORD WINAPI Music_Menu(void* param)
 {

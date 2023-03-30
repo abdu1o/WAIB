@@ -296,7 +296,7 @@ public:
 
                 //letter movement-------------------------
                 menu.X = 17;
-                menu.Y = 3;
+                menu.Y = 3; 
                 Menu obj;
 
                 //P
