@@ -51,8 +51,8 @@ enum Border
 	_EMPTY = 255
 };
 
-enum Alphabet 
-{ 
+enum Alphabet
+{
 	A = 'A',
 	B = 'B',
 	C = 'C',
@@ -92,4 +92,4 @@ enum LevelBox
 
 };
 
-enum MenuWords {PLAY = 31, CREATORS = 32, EXIT = 33}; // words protect 
+enum MenuWords { PLAY = 31, CREATORS = 32, EXIT = 33 }; // words protect 

@@ -2,7 +2,7 @@
 #include "Move.h"
 #include "Enums.h"
 
-class Menu 
+class Menu
 {
 
 private:
@@ -23,18 +23,18 @@ private:
 
 public:
 
-    Menu() 
+    Menu()
     {
         h = GetStdHandle(STD_OUTPUT_HANDLE);
         this->menu.X = 17;
         this->menu.Y = 3;
 
 
-        for (int y = 0; y < HEIGHT; y++) 
+        for (int y = 0; y < HEIGHT; y++)
         {
-            for (int x = 0; x < WIDTH; x++) 
+            for (int x = 0; x < WIDTH; x++)
             {
-                
+
                 //Play
                 if (y == menu.Y && x == menu.X)
                 {
@@ -111,14 +111,14 @@ public:
                     menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
                 }
 
-                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndHEIGHT || y >= StartHEIGHT && x == EndWIDTH && y <= EndWIDTH )
+                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndHEIGHT || y >= StartHEIGHT && x == EndWIDTH && y <= EndWIDTH)
                 {
                     menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
                 }
 
                 //====================================================================================
 
-                else 
+                else
                 {
                     menu_box[y][x] = Border::EMPTY; // nihuya
                 }
@@ -126,13 +126,13 @@ public:
         }
     }
 
-    
 
-    void Show() 
+
+    void Show()
     {
-        for (int y = 0; y < HEIGHT; y++) 
+        for (int y = 0; y < HEIGHT; y++)
         {
-            for (int x = 0; x < WIDTH; x++) 
+            for (int x = 0; x < WIDTH; x++)
             {
                 switch (menu_box[y][x])
                 {
@@ -177,7 +177,7 @@ public:
                     break;
 
 
-                case Alphabet::P: 
+                case Alphabet::P:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "P";
                     break;
@@ -292,7 +292,7 @@ public:
                 player.SetPosition();
                 player.SetColor(Color::BLUE);
                 player.PrintEmoji();
-                
+
 
                 //letter movement-------------------------
                 menu.X = 17;

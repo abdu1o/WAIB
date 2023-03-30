@@ -37,7 +37,7 @@ public:
             {
 
                 //BORDERS=============================================================================
-                if (y == StartHEIGHT && x == StartWIDTH )
+                if (y == StartHEIGHT && x == StartWIDTH)
                 {
                      menu_box[y][x] = Border::CORNER_01; // corner 1
                 }
@@ -62,7 +62,7 @@ public:
                     menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
                 }
 
-                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x ==EndWIDTH && y <= EndHEIGHT)
+                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x == EndWIDTH && y <= EndHEIGHT)
                 {
                     menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
                 }

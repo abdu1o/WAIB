@@ -28,7 +28,6 @@
     <ClInclude Include="WAIB\Headers\Level.h" />
     <ClInclude Include="WAIB\Headers\Menu.h" />
     <ClInclude Include="WAIB\Headers\Move.h" />
-    <ClInclude Include="WAIB\Headers\ShowKeeper.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="WAIB\Music\menu.wav" />
