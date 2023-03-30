@@ -12,8 +12,8 @@ void Start()
 {
 	CreateThread(0, 0, Music_Menu, 0, 0, 0);
 
-	//Menu menu;
-	//menu.Show();
+	Menu menu;
+	menu.Show();
 
 	//personal console window settings for each computer
 	//change by needed
