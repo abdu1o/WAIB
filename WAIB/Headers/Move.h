@@ -5,12 +5,12 @@ class Move
 {
 private:
 	char emoji;
-	COORD Cursor {};
+	COORD Cursor{};
 
 public:
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	Move(char _emoji, int x, int y) 
+	Move(char _emoji, int x, int y)
 	{
 		this->emoji = _emoji;
 		Cursor.X = x;
