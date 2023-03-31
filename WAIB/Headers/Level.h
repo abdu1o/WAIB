@@ -10,21 +10,22 @@ private:
     static const int WIDTH = 67;
     static const int HEIGHT = 23;
 
-    static const int StartWIDTH = 2;
-    static const int StartHEIGHT = 2;
+    static const int StartWIDTH = 5;
+    static const int StartHEIGHT = 0;
 
     static const int EndWIDTH = WIDTH - 9;
     static const int EndHEIGHT = HEIGHT - 1;
-     
 
     int menu_box[HEIGHT][WIDTH] = {};
+
+    int trigger;
 
     HANDLE h;
     COORD menu;
 
 public:
 
-    LevelMap()  
+    LevelMap()
     {
         h = GetStdHandle(STD_OUTPUT_HANDLE);
         this->menu.X = 1;
@@ -39,22 +40,22 @@ public:
                 //BORDERS=============================================================================
                 if (y == StartHEIGHT && x == StartWIDTH)
                 {
-                     menu_box[y][x] = Border::CORNER_01; // corner 1
+                    menu_box[y][x] = Border::CORNER_01; // corner 1
                 }
 
                 else if (y == StartHEIGHT && x == EndWIDTH)
                 {
-                  menu_box[y][x] = Border::CORNER_02; // corner 2
+                    menu_box[y][x] = Border::CORNER_02; // corner 2
                 }
 
                 else if (y == EndHEIGHT && x == EndWIDTH)
                 {
-                   menu_box[y][x] = Border::CORNER_03; // corner 3
+                    menu_box[y][x] = Border::CORNER_03; // corner 3
                 }
 
                 else if (y == EndHEIGHT && x == StartWIDTH)
                 {
-                   menu_box[y][x] = Border::CORNER_04; // corner 4
+                    menu_box[y][x] = Border::CORNER_04; // corner 4
                 }
 
                 else if (y == StartHEIGHT && x >= StartWIDTH && x <= EndWIDTH || y == EndHEIGHT && x >= StartWIDTH && x <= EndWIDTH)
@@ -66,7 +67,7 @@ public:
                 {
                     menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
                 }
-               
+
                 //====================================================================================
 
                 else
@@ -83,7 +84,7 @@ public:
                 {
                     box_X += 18;
 
-                    if (x == EndWIDTH - 10 && y == StartHEIGHT + 7)
+                    if (x == EndWIDTH - 7 && y == StartHEIGHT + 7)
                     {
                         menu_box[y][x] = LevelBox::LEVEL_BORDER_LEFT_RIGHT;
                     }
@@ -118,7 +119,7 @@ public:
                         menu_box[y][x] = 100 + steps + 1;
                     }
 
-                    steps++;   
+                    steps++;
 
 
                     if (steps % 3 == 0)
@@ -127,15 +128,13 @@ public:
                         box_X = -10;
                     }
 
-                    
+
                 }
-                
-               
+
+
             }
         }
     }
-
-
 
     void Show()
     {
@@ -273,6 +272,7 @@ public:
 
 
         // Movement ====================================================
+        trigger = 0; //number of selected level, (0) - level not selected
 
         HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
@@ -301,7 +301,8 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 1" << std::endl;
+                                trigger = 1;
+                                break;
                             }
                         }
 
@@ -331,7 +332,7 @@ public:
                                         }
                                     }
                                 }*/
-                                
+
 
                                 std::cout << "Level 2" << std::endl;
                             }
@@ -402,11 +403,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 8
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
                         {
-                                // Open Level
-                                if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                                {
-                                    std::cout << "Level 8" << std::endl;
-                                }
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 8" << std::endl;
+                            }
                         }
 
 
@@ -414,18 +415,29 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 9
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
                         {
-                                // Open Level
-                                if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                                {
-                                    std::cout << "Level 9" << std::endl;
-                                }
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 9" << std::endl;
+                            }
                         }
 
                     }
                 }
             }
+            if (trigger != 0)
+            {
+                system("cls");
+                break;
+            }
+            
         }
 
 
+    }
+
+    const int GetLevelTrigger()
+    {
+        return trigger;
     }
 };

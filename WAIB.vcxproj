@@ -23,11 +23,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WAIB\Enums\Enums.h" />
+    <ClInclude Include="WAIB\Headers\ConsoleSetter.h" />
     <ClInclude Include="WAIB\Headers\GameManager.h" />
     <ClInclude Include="WAIB\Headers\Global.h" />
     <ClInclude Include="WAIB\Headers\Level.h" />
     <ClInclude Include="WAIB\Headers\Menu.h" />
     <ClInclude Include="WAIB\Headers\Move.h" />
+    <ClInclude Include="WAIB\Headers\WordKeeper.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="WAIB\Music\menu.wav" />

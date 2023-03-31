@@ -11,8 +11,8 @@ public:
 	//start pos for art 
 	WordKeeper()
 	{
-		this->startArt.X = 2;
-		this->startArt.Y = 1;
+		this->startArt.X = 4;
+		this->startArt.Y = 2;
 	}
 
 	void Show()
