@@ -1,5 +1,5 @@
 #include "Global.h"
-#include "Enums.h"
+#include "Enums/Enums.h"
 #include "Move.h"
 
 
@@ -185,7 +185,7 @@ public:
                     cout << (char)Border::_CORNER_04;
                     break;
 
-                // LEVEL =========================================
+                    // LEVEL =========================================
 
                 case LevelBox::LEVEL_BORDER_LEFT_RIGHT:
                     SetConsoleTextAttribute(h, DARKGRAY);
@@ -218,47 +218,47 @@ public:
                     break;
 
                 case 101: // Level 1
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, GREEN);
                     cout << "1";
                     break;
 
                 case 102: // Level 2
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "2";
                     break;
 
                 case 103: // Level 3
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "3";
                     break;
 
                 case 104: // Level 4
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "4";
                     break;
 
                 case 105: // Level 5
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "5";
                     break;
 
                 case 106: // Level 6 
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "6";
                     break;
 
                 case 107: // Level 7
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "7";
                     break;
 
                 case 108: // Level 8 
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "8";
                     break;
 
                 case 109: // Level 9
-                    SetConsoleTextAttribute(h, WHITE);
+                    SetConsoleTextAttribute(h, RED);
                     cout << "9";
                     break;
 
@@ -266,28 +266,166 @@ public:
                 }
             }
             cout << "\n";
-        } 
+
+        }
         cout << "\n";
+
+
 
         // Movement ====================================================
 
-        Move Cursor = { NULL, StartWIDTH, StartHEIGHT };
-        Cursor.SetPosition();
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+        GetConsoleScreenBufferInfo(consoleHandle, &consoleInfo);
+
+        INPUT_RECORD inputRecords[128];
+        DWORD eventsCount;
+        HANDLE inputHandle = GetStdHandle(STD_INPUT_HANDLE);
+        SetConsoleMode(inputHandle, ENABLE_MOUSE_INPUT | ENABLE_EXTENDED_FLAGS);
 
         while (true)
         {
-            if (_kbhit())
+            if (ReadConsoleInput(inputHandle, inputRecords, 128, &eventsCount))
             {
-                int code = _getch();
-
-                if (code == 224)
+                for (DWORD i = 0; i < eventsCount; ++i)
                 {
-                    code = _getch();
+                    if (inputRecords[i].EventType == MOUSE_EVENT)
+                    {
+                        MOUSE_EVENT_RECORD& mouseEvent = inputRecords[i].Event.MouseEvent;
+
+                        // !! Need to add condition - Level open? !!
+
+                        if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 1
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 1" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 2
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+
+                                // Set Green Color for Level
+
+                               /* for (int y = 0; y < HEIGHT; y++)
+                                {
+                                    for (int x = 0; x < WIDTH; x++)
+                                    {
+                                        if (menu_box[y][x] == 102)
+                                        {
+                                            COORD Level_02;
+                                            Level_02.Y = y;
+                                            Level_02.X = x;
+                                            SetConsoleCursorPosition(h, Level_02);
+                                            SetConsoleTextAttribute(h, GREEN);
+                                            cout << "2";
+                                        }
+                                    }
+                                }*/
+                                
+
+                                std::cout << "Level 2" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 3
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 3" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 4
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 4" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 5
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 5" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 6
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 6" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 7
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
+                        {
+                            // Open Level
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            {
+                                std::cout << "Level 7" << std::endl;
+                            }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 8
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
+                        {
+                                // Open Level
+                                if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                                {
+                                    std::cout << "Level 8" << std::endl;
+                                }
+                        }
+
+
+
+                        else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 9
+                            && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
+                        {
+                                // Open Level
+                                if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                                {
+                                    std::cout << "Level 9" << std::endl;
+                                }
+                        }
+
+                    }
                 }
-
-
             }
         }
+
 
     }
 };
