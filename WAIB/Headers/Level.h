@@ -299,7 +299,7 @@ public:
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
                             // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED /*&& condition*/)
                             {
                                 trigger = 1;
                                 break;
