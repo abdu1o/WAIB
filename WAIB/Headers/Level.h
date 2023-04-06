@@ -3,6 +3,7 @@
 #include "Move.h"
 
 
+
 class LevelMap
 {
 
@@ -138,6 +139,7 @@ public:
 
     void Show()
     {
+        system("cls");
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
@@ -293,21 +295,16 @@ public:
                     {
                         MOUSE_EVENT_RECORD& mouseEvent = inputRecords[i].Event.MouseEvent;
 
-                        // !! Need to add condition - Level open? !!
-
                         if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 1
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
                             // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED /*&& condition*/)
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED /*&& condition?*/)
                             {
                                 trigger = 1;
                                 break;
                             }
                         }
-
-
-
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 2
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {

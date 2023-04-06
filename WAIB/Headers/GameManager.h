@@ -10,7 +10,7 @@ DWORD WINAPI Music_Menu(void* param)
 	return 0;
 }
 
-void Start() 
+void Start()
 {
 	CreateThread(0, 0, Music_Menu, 0, 0, 0);
 
@@ -20,7 +20,7 @@ void Start()
 	//personal console window settings for each computer
 	//change by needed
 
-	ConsoleSet(40, 1600, 1100); 
+	ConsoleSet(40, 1600, 1100);
 	//40 - font size
 	//1600 - window width
 	//920 - window height
@@ -33,22 +33,52 @@ void Start()
 	/*phrases spoken by Keeper
 	(need to optimize)*/
 	vector<string> txt;
-	if (map.GetLevelTrigger() == 1) //on the LevelMap selected the first level
+	switch (map.GetLevelTrigger())
 	{
-		WordKeeper keeper;
-		keeper.Show();
+		case 1://on the LevelMap selected the first level
+		{
+			WordKeeper keeper;
+			keeper.Show();
 
-		txt.push_back("Welcome home traveler!");
-		txt.push_back("or not home...");
-		txt.push_back("I am the Word Keeper,");
-		txt.push_back("and I am here to help you");
-		txt.push_back("get out of this terrible place.");
-		txt.push_back("First, try to use your gift of thinking");
+			txt.push_back("Welcome home traveler!");
+			txt.push_back("or not home...");
+			txt.push_back("I am the Word Keeper,");
+			txt.push_back("and I am here to help you");
+			txt.push_back("get out of this terrible place.");
+			txt.push_back("First, try to use your gift of thinking");
 
-		keeper.Say(txt, 3, 3);
-		//txt - phrase to say
-		//3 - cord X for start txt 
-		//2 - cord Y for start txt 
+			keeper.Say(txt, 3, 3);
+			//txt - phrase to say
+			//3 - cord X for start txt 
+			//2 - cord Y for start txt
+		}
+		case 3:
+		{
+
+		}
+		case 4:
+		{
+
+		}
+		case 5:
+		{
+
+		}
+		case 6:
+		{
+
+		}
+		case 7:
+		{
+
+		}
+		case 8:
+		{
+
+		}
+		case 9:
+		{
+
+		}
 	}
-	
 }
