@@ -1,6 +1,6 @@
 #include "Global.h"
 #include "Move.h"
-#include "Enums.h"
+#include "Enums/Enums.h"
 
 class Level1 : public Move
 {

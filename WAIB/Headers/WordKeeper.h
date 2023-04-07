@@ -1,5 +1,6 @@
 #include "Global.h"
-#include "Enums.h"
+#include "Enums/Enums.h"
+
 
 class WordKeeper
 {
