@@ -10,6 +10,8 @@ private:
 public:
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
+	Move(){}
+
 	Move(char _emoji, int x, int y)
 	{
 		this->emoji = _emoji;

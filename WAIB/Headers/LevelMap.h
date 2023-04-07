@@ -2,8 +2,6 @@
 #include "Enums/Enums.h"
 #include "Move.h"
 
-
-
 class LevelMap
 {
 
@@ -23,6 +21,26 @@ private:
 
     HANDLE h;
     COORD menu;
+
+    void OpenDoor(int LevelIndex, int LevelNum)
+    {
+
+        for (int y = 0; y < HEIGHT; y++)
+        {
+            for (int x = 0; x < WIDTH; x++)
+            {
+                if (menu_box[y][x] == LevelIndex)
+                {
+                    COORD Level;
+                    Level.Y = y;
+                    Level.X = x;
+                    SetConsoleCursorPosition(h, Level);
+                    SetConsoleTextAttribute(h, GREEN);
+                    cout << LevelNum;
+                }
+            }
+        }
+    }
 
 public:
 
@@ -311,26 +329,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-
-                                // Set Green Color for Level
-
-                               /* for (int y = 0; y < HEIGHT; y++)
-                                {
-                                    for (int x = 0; x < WIDTH; x++)
-                                    {
-                                        if (menu_box[y][x] == 102)
-                                        {
-                                            COORD Level_02;
-                                            Level_02.Y = y;
-                                            Level_02.X = x;
-                                            SetConsoleCursorPosition(h, Level_02);
-                                            SetConsoleTextAttribute(h, GREEN);
-                                            cout << "2";
-                                        }
-                                    }
-                                }*/
-
-
+                                //LevelMap::OpenDoor(102, 2);
                                 std::cout << "Level 2" << std::endl;
                             }
                         }
@@ -427,7 +426,7 @@ public:
                 system("cls");
                 break;
             }
-            
+
         }
 
 

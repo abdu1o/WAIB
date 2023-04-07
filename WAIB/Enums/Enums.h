@@ -51,6 +51,13 @@ enum Border
 	_EMPTY = 255
 };
 
+enum Door
+{
+	DOOR = 51,
+	_DOOR = 177
+};
+
+
 enum Alphabet
 {
 	A = 'A',

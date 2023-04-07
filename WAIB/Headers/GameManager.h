@@ -2,7 +2,8 @@
 #include "Menu.h"
 #include "ConsoleSetter.h"
 #include "WordKeeper.h"
-#include "Level.h"
+#include "LevelMap.h"
+#include "Level1.h"
 
 DWORD WINAPI Music_Menu(void* param)
 {
@@ -37,20 +38,23 @@ void Start()
 	{
 		case 1://on the LevelMap selected the first level
 		{
-			WordKeeper keeper;
-			keeper.Show();
+			//WordKeeper keeper;
+			//keeper.Show();
 
-			txt.push_back("Welcome home traveler!");
-			txt.push_back("or not home...");
-			txt.push_back("I am the Word Keeper,");
-			txt.push_back("and I am here to help you");
-			txt.push_back("get out of this terrible place.");
-			txt.push_back("First, try to use your gift of thinking");
+			//txt.push_back("Welcome home traveler!");
+			//txt.push_back("or not home...");
+			//txt.push_back("I am the Word Keeper,");
+			//txt.push_back("and I am here to help you");
+			//txt.push_back("get out of this terrible place.");
+			//txt.push_back("First, try to use your gift of thinking");
 
-			keeper.Say(txt, 3, 3);
-			//txt - phrase to say
-			//3 - cord X for start txt 
-			//2 - cord Y for start txt
+			//keeper.Say(txt, 3, 3);
+			////txt - phrase to say
+			////3 - cord X for start txt 
+			////2 - cord Y for start txt
+
+			Level1 obj;
+			obj.Show();
 		}
 		case 3:
 		{
