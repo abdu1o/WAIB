@@ -58,7 +58,7 @@ enum Door
 };
 
 
-enum Alphabet
+enum Static_Alphabet
 {
 	A = 'A',
 	B = 'B',

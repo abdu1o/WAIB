@@ -38,7 +38,7 @@ public:
                 //Play
                 if (y == menu.Y && x == menu.X)
                 {
-                    menu_box[y][x] = Alphabet::P;
+                    menu_box[y][x] = Static_Alphabet::P;
                 }
 
                 else if (y == menu.Y && x == menu.X + 2)
@@ -54,7 +54,7 @@ public:
                 //Creators
                 else if (y == menu.Y + 2 && x == menu.X)
                 {
-                    menu_box[y][x] = Alphabet::C;
+                    menu_box[y][x] = Static_Alphabet::C;
                 }
 
                 else if (y == menu.Y + 2 && x == menu.X + 2)
@@ -70,7 +70,7 @@ public:
                 //Exit
                 else if (y == menu.Y + 4 && x == menu.X)
                 {
-                    menu_box[y][x] = Alphabet::E;
+                    menu_box[y][x] = Static_Alphabet::E;
                 }
 
                 else if (y == menu.Y + 4 && x == menu.X + 2)
@@ -139,74 +139,50 @@ public:
                 case Border::EMPTY: // nihuya
                     cout << (char)Border::_EMPTY;
                     break;
-
-
                 case Border::BORDER_UP_DOWN: // up and down borders
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_BORDER_UP_DOWN;
                     break;
-
-
                 case Border::BORDER_LEFT_RIGHT: // left and right borders
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_BORDER_LEFT_RIGHT;
                     break;
-
-
                 case Border::CORNER_01: // corner 1
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_CORNER_01;
                     break;
-
-
                 case Border::CORNER_02: // corner 2
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_CORNER_02;
                     break;
-
-
                 case Border::CORNER_03: // corner 3
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_CORNER_03;
                     break;
-
-
                 case Border::CORNER_04: // corner 4
                     SetConsoleTextAttribute(h, DARKYELLOW);
                     cout << (char)Border::_CORNER_04;
                     break;
-
-
-                case Alphabet::P:
+                case Static_Alphabet::P:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "P";
                     break;
-
-
                 case 7:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "LAY";
                     break;
-
-
-                case Alphabet::C:
+                case Static_Alphabet::C:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "C";
                     break;
-
-
                 case 8:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "REATORS";
                     break;
-
-
-                case Alphabet::E:
+                case Static_Alphabet::E:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "E";
                     break;
-
-
                 case 9:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << "XIT";

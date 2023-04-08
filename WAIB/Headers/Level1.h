@@ -100,6 +100,33 @@ public:
                 }
 
 
+                //Static letters =====================================================================
+
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 10)
+                {
+                    menu_box[y][x] = Static_Alphabet::D;
+                }
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 11)
+                {
+                    menu_box[y][x] = Static_Alphabet::O;
+                }
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 12)
+                {
+                    menu_box[y][x] = Static_Alphabet::O;
+                }
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 13)
+                {
+                    menu_box[y][x] = Static_Alphabet::R;
+                }
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 15)
+                {
+                    menu_box[y][x] = Static_Alphabet::I;
+                }
+                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 16)
+                {
+                    menu_box[y][x] = Static_Alphabet::S;
+                }
+
                 //====================================================================================
 
                 else
@@ -166,6 +193,26 @@ public:
                     SetConsoleTextAttribute(h, GRAY);
                     cout << (char)Door::_DOOR;
                     break;
+                case Static_Alphabet::D: // D
+                    SetConsoleTextAttribute(h, RED);
+                    cout << (char)Static_Alphabet::D;
+                    break;
+                case Static_Alphabet::O: // O
+                    SetConsoleTextAttribute(h, RED);
+                    cout << (char)Static_Alphabet::O;
+                    break;
+                case Static_Alphabet::R: // R
+                    SetConsoleTextAttribute(h, RED);
+                    cout << (char)Static_Alphabet::R;
+                    break;
+                case Static_Alphabet::I: // I
+                    SetConsoleTextAttribute(h, RED);
+                    cout << (char)Static_Alphabet::I;
+                    break;
+                case Static_Alphabet::S: // S
+                    SetConsoleTextAttribute(h, RED);
+                    cout << (char)Static_Alphabet::S;
+                    break;
                 }
             }
             cout << "\n";
@@ -201,11 +248,15 @@ public:
                     menu_box[player.GetY() - 1][player.GetX()] != Border::CORNER_03 && 
                     menu_box[player.GetY() - 1][player.GetX()] != Border::CORNER_02 && 
                     menu_box[player.GetY() - 1][player.GetX()] != Border::CORNER_01 &&
-                    menu_box[player.GetY() - 1][player.GetX()] != Door::DOOR)
+                    menu_box[player.GetY() - 1][player.GetX()] != Door::DOOR &&
+                    menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::D &&
+                    menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::O &&
+                    menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::R &&
+                    menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::I &&
+                    menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::S)
                 {
                     player.MoveUp();
                 }
-
 
 
                 else if (code == KeyCode::DOWN && menu_box[player.GetY() + 1][player.GetX()] != Border::BORDER_UP_DOWN &&
@@ -213,7 +264,12 @@ public:
                     menu_box[player.GetY() + 1][player.GetX()] != Border::CORNER_03 &&
                     menu_box[player.GetY() + 1][player.GetX()] != Border::CORNER_02 &&
                     menu_box[player.GetY() + 1][player.GetX()] != Border::CORNER_01 &&
-                    menu_box[player.GetY() + 1][player.GetX()] != Door::DOOR)
+                    menu_box[player.GetY() + 1][player.GetX()] != Door::DOOR &&
+                    menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::D &&
+                    menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::O &&
+                    menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::R &&
+                    menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::I &&
+                    menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::S)
                 {
                     player.MoveDown();
                 }
@@ -224,7 +280,12 @@ public:
                     menu_box[player.GetY()][player.GetX() - 1] != Border::CORNER_03 &&
                     menu_box[player.GetY()][player.GetX() - 1] != Border::CORNER_02 &&
                     menu_box[player.GetY()][player.GetX() - 1] != Border::CORNER_01 &&
-                    menu_box[player.GetY()][player.GetX() - 1] != Door::DOOR)
+                    menu_box[player.GetY()][player.GetX() - 1] != Door::DOOR &&
+                    menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::D &&
+                    menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::O &&
+                    menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::R &&
+                    menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::I &&
+                    menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::S)
                 {
                     player.MoveLeft();
                 }
@@ -236,7 +297,12 @@ public:
                     menu_box[player.GetY()][player.GetX() + 1] != Border::CORNER_03 &&
                     menu_box[player.GetY()][player.GetX() + 1] != Border::CORNER_02 &&
                     menu_box[player.GetY()][player.GetX() + 1] != Border::CORNER_01 &&
-                    menu_box[player.GetY()][player.GetX() + 1] != Door::DOOR)
+                    menu_box[player.GetY()][player.GetX() + 1] != Door::DOOR &&
+                    menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::D &&
+                    menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::O &&
+                    menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::R &&
+                    menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::I &&
+                    menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::S)
                 {
                     player.MoveRight();
                 }
