@@ -1,4 +1,9 @@
 #pragma once
+//!!VERY BIG ERROR!!
+//!!IN ENUMS!!
+//!!DO NOT USE NUMBERS FROM 0 TO 25 
+//FOR DEFINING LEVEL ELEMENTS (borders, corners...)!!
+
 enum Color
 {
 	BLACK = 0,
@@ -30,25 +35,15 @@ enum KeyCode
 	DOWN = 80
 };
 
-
 enum Border
 {
-	BORDER_UP_DOWN = 1,
-	BORDER_LEFT_RIGHT = 2,
-	CORNER_01 = 3,
-	CORNER_02 = 4,
-	CORNER_03 = 5,
-	CORNER_04 = 6,
-	EMPTY = 0,
-
-	//char elements
-	_BORDER_UP_DOWN = 205,
-	_BORDER_LEFT_RIGHT = 186,
-	_CORNER_01 = 201,
-	_CORNER_02 = 187,
-	_CORNER_03 = 188,
-	_CORNER_04 = 200,
-	_EMPTY = 255
+	BORDER_UP_DOWN = 205,
+	BORDER_LEFT_RIGHT = 186,
+	CORNER_01 = 201,
+	CORNER_02 = 187,
+	CORNER_03 = 188,
+	CORNER_04 = 200,
+	EMPTY = 255
 };
 
 enum Door
@@ -56,7 +51,6 @@ enum Door
 	DOOR = 51,
 	_DOOR = 177
 };
-
 
 enum Static_Alphabet
 {
@@ -88,6 +82,36 @@ enum Static_Alphabet
 	Z = 'Z',
 };
 
+enum Move_Alphabet
+{
+	_A,
+	_B,
+	_C,
+	_D,
+	_E,
+	_F,
+	_G,
+	_H,
+	_I,
+	_J,
+	_K,
+	_L,
+	_M,
+	_N,
+	_O,
+	_P,
+	_Q,
+	_R,
+	_S,
+	_T,
+	_U,
+	_V,
+	_W,
+	_X,
+	_Y,
+	_Z,
+};
+
 enum LevelBox
 {
 	LEVEL_BORDER_UP_DOWN = 301,
@@ -96,7 +120,7 @@ enum LevelBox
 	LEVEL_CORNER_02 = 304,
 	LEVEL_CORNER_03 = 305,
 	LEVEL_CORNER_04 = 306,
-
+	LEVEL_LETTER_FIELD = 249
 };
 
 enum MenuWords { PLAY = 31, CREATORS = 32, EXIT = 33 }; // words protect 

@@ -137,31 +137,31 @@ public:
                 switch (menu_box[y][x])
                 {
                 case Border::EMPTY: // nihuya
-                    cout << (char)Border::_EMPTY;
+                    cout << (char)Border::EMPTY;
                     break;
                 case Border::BORDER_UP_DOWN: // up and down borders
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_BORDER_UP_DOWN;
+                    cout << (char)Border::BORDER_UP_DOWN;
                     break;
                 case Border::BORDER_LEFT_RIGHT: // left and right borders
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_BORDER_LEFT_RIGHT;
+                    cout << (char)Border::BORDER_LEFT_RIGHT;
                     break;
                 case Border::CORNER_01: // corner 1
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_CORNER_01;
+                    cout << (char)Border::CORNER_01;
                     break;
                 case Border::CORNER_02: // corner 2
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_CORNER_02;
+                    cout << (char)Border::CORNER_02;
                     break;
                 case Border::CORNER_03: // corner 3
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_CORNER_03;
+                    cout << (char)Border::CORNER_03;
                     break;
                 case Border::CORNER_04: // corner 4
                     SetConsoleTextAttribute(h, DARKYELLOW);
-                    cout << (char)Border::_CORNER_04;
+                    cout << (char)Border::CORNER_04;
                     break;
                 case Static_Alphabet::P:
                     SetConsoleTextAttribute(h, WHITE);

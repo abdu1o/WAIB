@@ -1,2 +1,3 @@
 ﻿  WAIB.cpp
+E:\Шкила\Шаг\C++\WAIB\WAIB\Headers\Level1.h(45,19): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   WAIB.vcxproj -> E:\Шкила\Шаг\C++\WAIB\x64\Debug\WAIB.exe
