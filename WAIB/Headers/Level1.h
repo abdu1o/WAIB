@@ -28,7 +28,10 @@ private:
     COORD coord_J{};
     COORD coord_K{};
 
-    COORD field_cords{};
+    COORD field_1{};
+    COORD field_2{};
+    COORD field_3{};
+    COORD field_4{};
 
 
     void OpenDoor()
@@ -47,6 +50,59 @@ private:
                 }
             }
         }
+    }
+
+    void PrintField()
+    {
+        SetConsoleCursorPosition(h, field_1);
+        SetConsoleTextAttribute(h, RED);
+        cout << (char)LevelBox::LEVEL_LETTER_FIELD;
+
+        SetConsoleCursorPosition(h, field_2);
+        SetConsoleTextAttribute(h, RED);
+        cout << (char)LevelBox::LEVEL_LETTER_FIELD;
+
+        SetConsoleCursorPosition(h, field_3);
+        SetConsoleTextAttribute(h, RED);
+        cout << (char)LevelBox::LEVEL_LETTER_FIELD;
+
+        SetConsoleCursorPosition(h, field_4);
+        SetConsoleTextAttribute(h, RED);
+        cout << (char)LevelBox::LEVEL_LETTER_FIELD;
+    }
+
+    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char)
+    {
+         if (menu_box[letter.Y][letter.X] == LevelBox::LEVEL_LETTER_FIELD)
+         {
+             menu_box[letter.Y][letter.X] = LevelBox::LEVEL_LETTER_FIELD;
+         }
+         else
+         {
+             menu_box[letter.Y][letter.X] = Border::EMPTY;
+         }
+
+         PrintField();
+
+         switch (direction)
+         {
+         case 1:
+             letter.Y -= 1; //up
+             break; 
+         case 2:
+             letter.Y += 1; // down
+             break;
+         case 3:
+             letter.X -= 1; // left
+             break;
+         case 4:
+             letter.X += 1; // right
+             break;
+         }
+         menu_box[letter.Y][letter.X] = move_char;
+         SetConsoleTextAttribute(h, WHITE);
+         SetConsoleCursorPosition(h, letter);
+         cout << ch;
     }
 
 public:
@@ -157,18 +213,26 @@ public:
 
                 else if (y == StartHEIGHT + 3 && x == StartWIDTH + 18)
                 {
+                    field_1.Y = StartHEIGHT + 3;
+                    field_1.X = StartWIDTH + 18;
                     menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
                 }
                 else if (y == StartHEIGHT + 3 && x == StartWIDTH + 19)
                 {
+                    field_2.Y = StartHEIGHT + 3;
+                    field_2.X = StartWIDTH + 19;
                     menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
                 }
                 else if (y == StartHEIGHT + 3 && x == StartWIDTH + 20)
                 {
+                    field_3.Y = StartHEIGHT + 3;
+                    field_3.X = StartWIDTH + 20;
                     menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
                 }
                 else if (y == StartHEIGHT + 3 && x == StartWIDTH + 21)
                 {
+                    field_4.Y = StartHEIGHT + 3;
+                    field_4.X = StartWIDTH + 21;
                     menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
                 }
 
@@ -404,6 +468,7 @@ public:
                         LetterMove(Static_Alphabet::K, coord_K, 1, _K);
                         break;
                     }
+                    
                 }
 
 
@@ -444,6 +509,7 @@ public:
                         LetterMove(Static_Alphabet::K, coord_K, 2, _K);
                         break;
                     }
+                    
                 }
 
 
@@ -459,31 +525,31 @@ public:
                     menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::I &&
                     menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::S)
                 {
-                    player.MoveLeft();
-                    switch (menu_box[player.GetY()][player.GetX()])
-                    {
-                    case Move_Alphabet::_O:
-                        LetterMove(Static_Alphabet::O, coord_O, 3, _O);
-                        break;
-                    case Move_Alphabet::_P:
-                        LetterMove(Static_Alphabet::P, coord_P, 3, _P);
-                        break;
-                    case Move_Alphabet::_E:
-                        LetterMove(Static_Alphabet::E, coord_E, 3, _E);
-                        break;
-                    case Move_Alphabet::_N:
-                        LetterMove(Static_Alphabet::N, coord_N, 3, _N);
-                        break;
-                    case Move_Alphabet::_Q:
-                        LetterMove(Static_Alphabet::Q, coord_Q, 3, _Q);
-                        break;
-                    case Move_Alphabet::_J:
-                        LetterMove(Static_Alphabet::J, coord_J, 3, _J);
-                        break;
-                    case Move_Alphabet::_K:
-                        LetterMove(Static_Alphabet::K, coord_K, 3, _K);
-                        break;
-                    }
+                     player.MoveLeft();
+                     switch (menu_box[player.GetY()][player.GetX()])
+                     {
+                     case Move_Alphabet::_O:
+                         LetterMove(Static_Alphabet::O, coord_O, 3, _O);
+                         break;
+                     case Move_Alphabet::_P:
+                         LetterMove(Static_Alphabet::P, coord_P, 3, _P);
+                         break;
+                     case Move_Alphabet::_E:
+                         LetterMove(Static_Alphabet::E, coord_E, 3, _E);
+                         break;
+                     case Move_Alphabet::_N:
+                         LetterMove(Static_Alphabet::N, coord_N, 3, _N);
+                         break;
+                     case Move_Alphabet::_Q:
+                         LetterMove(Static_Alphabet::Q, coord_Q, 3, _Q);
+                         break;
+                     case Move_Alphabet::_J:
+                         LetterMove(Static_Alphabet::J, coord_J, 3, _J);
+                         break;
+                     case Move_Alphabet::_K:
+                         LetterMove(Static_Alphabet::K, coord_K, 3, _K);
+                         break;
+                     }
                 }
 
 
@@ -524,7 +590,7 @@ public:
                     case Move_Alphabet::_K:
                         LetterMove(Static_Alphabet::K, coord_K, 4, _K);
                         break;
-                    }
+                    }  
                 }
 
                 //set new coord---------------------------
@@ -537,46 +603,7 @@ public:
                 {
                     Level1::OpenDoor();
                 }
-
             }
-        }
-
-    }
-
-    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char)
-    {
-        if (menu_box[letter.Y][letter.X] == LevelBox::LEVEL_LETTER_FIELD)
-        {
-            menu_box[letter.Y][letter.X] = LevelBox::LEVEL_LETTER_FIELD;
-        }
-        else
-        {
-            menu_box[letter.Y][letter.X] = Border::EMPTY;
-        }
-        
-        switch (direction)
-        {
-        case 1:
-            letter.Y -= 1; //up
-            break;
-        case 2:
-            letter.Y += 1; // down
-            break;
-        case 3:
-            letter.X -= 1; // left
-            break;
-        case 4:
-            letter.X += 1; // right
-            break;
-        }
-        menu_box[letter.Y][letter.X] = move_char;
-        SetConsoleTextAttribute(h, WHITE);
-        SetConsoleCursorPosition(h, letter);
-        cout << ch;
-
-        for (int i = 0; i < 4; i++)
-        {
-
         }
     }
 };
