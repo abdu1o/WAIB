@@ -20,6 +20,17 @@ private:
 
     bool finish;
 
+    COORD coord_O{};
+    COORD coord_P{};
+    COORD coord_E{};
+    COORD coord_N{};
+    COORD coord_Q{};
+    COORD coord_J{};
+    COORD coord_K{};
+
+    COORD field_cords{};
+
+
     void OpenDoor()
     {
         for (int y = 0; y < HEIGHT; y++)
@@ -164,31 +175,45 @@ public:
                 //Move letters =======================================================================
 
                 else if (y == StartHEIGHT + randY[0] && x == StartWIDTH + randX[0])
-                {                                       
+                {               
+                    coord_O.X = StartWIDTH + randX[0];
+                    coord_O.Y = StartHEIGHT + randY[0];
                     menu_box[y][x] = Move_Alphabet::_O; 
                 }                                       
                 else if (y == StartHEIGHT + randY[1] && x == StartWIDTH + randX[1])
-                {                                       
+                {            
+                    coord_J.X = StartWIDTH + randX[1];
+                    coord_J.Y = StartHEIGHT + randY[1];
                     menu_box[y][x] = Move_Alphabet::_J; 
                 }                                       
                 else if (y == StartHEIGHT + randY[2] && x == StartWIDTH + randX[2])
-                {                                       
+                {          
+                    coord_K.X = StartWIDTH + randX[2];
+                    coord_K.Y = StartHEIGHT + randY[2];
                     menu_box[y][x] = Move_Alphabet::_K; 
                 }                                       
                 else if (y == StartHEIGHT + randY[3] && x == StartWIDTH + randX[3])
-                {                                       
+                {       
+                    coord_P.X = StartWIDTH + randX[3];
+                    coord_P.Y = StartHEIGHT + randY[3];
                     menu_box[y][x] = Move_Alphabet::_P; 
                 }                                       
                 else if (y == StartHEIGHT + randY[4] && x == StartWIDTH + randX[4])
-                {                                       
+                {             
+                    coord_E.X = StartWIDTH + randX[4];
+                    coord_E.Y = StartHEIGHT + randY[4];
                     menu_box[y][x] = Move_Alphabet::_E; 
                 }                                       
                 else if (y == StartHEIGHT + randY[5] && x == StartWIDTH + randX[5] )
-                {                                       
+                {        
+                    coord_N.X = StartWIDTH + randX[5];
+                    coord_N.Y = StartHEIGHT + randY[5];
                     menu_box[y][x] = Move_Alphabet::_N; 
                 }                                       
                 else if (y == StartHEIGHT + randY[6] && x == StartWIDTH + randX[6])
                 {
+                    coord_Q.X = StartWIDTH + randX[6];
+                    coord_Q.Y = StartHEIGHT + randY[6];
                     menu_box[y][x] = Move_Alphabet::_Q;
                 }
 
@@ -347,7 +372,38 @@ public:
                     menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::I &&
                     menu_box[player.GetY() - 1][player.GetX()] != Static_Alphabet::S)
                 {
+
+                    /*direction to move:
+                    1 - move up
+                    2 - move down
+                    3 - move left
+                    4 - move right*/
+
                     player.MoveUp();
+                    switch (menu_box[player.GetY()][player.GetX()])
+                    {
+                    case Move_Alphabet::_O:
+                        LetterMove(Static_Alphabet::O, coord_O, 1, _O);
+                        break;
+                    case Move_Alphabet::_P:
+                        LetterMove(Static_Alphabet::P, coord_P, 1, _P);
+                        break;
+                    case Move_Alphabet::_E:
+                        LetterMove(Static_Alphabet::E, coord_E, 1, _E);
+                        break;
+                    case Move_Alphabet::_N:
+                        LetterMove(Static_Alphabet::N, coord_N, 1, _N);
+                        break;
+                    case Move_Alphabet::_Q:
+                        LetterMove(Static_Alphabet::Q, coord_Q, 1, _Q);
+                        break;
+                    case Move_Alphabet::_J:
+                        LetterMove(Static_Alphabet::J, coord_J, 1, _J);
+                        break;
+                    case Move_Alphabet::_K:
+                        LetterMove(Static_Alphabet::K, coord_K, 1, _K);
+                        break;
+                    }
                 }
 
 
@@ -364,6 +420,30 @@ public:
                     menu_box[player.GetY() + 1][player.GetX()] != Static_Alphabet::S)
                 {
                     player.MoveDown();
+                    switch (menu_box[player.GetY()][player.GetX()])
+                    {
+                    case Move_Alphabet::_O:
+                        LetterMove(Static_Alphabet::O, coord_O, 2, _O);
+                        break;
+                    case Move_Alphabet::_P:
+                        LetterMove(Static_Alphabet::P, coord_P, 2, _P);
+                        break;
+                    case Move_Alphabet::_E:
+                        LetterMove(Static_Alphabet::E, coord_E, 2, _E);
+                        break;
+                    case Move_Alphabet::_N:
+                        LetterMove(Static_Alphabet::N, coord_N, 2, _N);
+                        break;
+                    case Move_Alphabet::_Q:
+                        LetterMove(Static_Alphabet::Q, coord_Q, 2, _Q);
+                        break;
+                    case Move_Alphabet::_J:
+                        LetterMove(Static_Alphabet::J, coord_J, 2, _J);
+                        break;
+                    case Move_Alphabet::_K:
+                        LetterMove(Static_Alphabet::K, coord_K, 2, _K);
+                        break;
+                    }
                 }
 
 
@@ -380,6 +460,30 @@ public:
                     menu_box[player.GetY()][player.GetX() - 1] != Static_Alphabet::S)
                 {
                     player.MoveLeft();
+                    switch (menu_box[player.GetY()][player.GetX()])
+                    {
+                    case Move_Alphabet::_O:
+                        LetterMove(Static_Alphabet::O, coord_O, 3, _O);
+                        break;
+                    case Move_Alphabet::_P:
+                        LetterMove(Static_Alphabet::P, coord_P, 3, _P);
+                        break;
+                    case Move_Alphabet::_E:
+                        LetterMove(Static_Alphabet::E, coord_E, 3, _E);
+                        break;
+                    case Move_Alphabet::_N:
+                        LetterMove(Static_Alphabet::N, coord_N, 3, _N);
+                        break;
+                    case Move_Alphabet::_Q:
+                        LetterMove(Static_Alphabet::Q, coord_Q, 3, _Q);
+                        break;
+                    case Move_Alphabet::_J:
+                        LetterMove(Static_Alphabet::J, coord_J, 3, _J);
+                        break;
+                    case Move_Alphabet::_K:
+                        LetterMove(Static_Alphabet::K, coord_K, 3, _K);
+                        break;
+                    }
                 }
 
 
@@ -397,6 +501,30 @@ public:
                     menu_box[player.GetY()][player.GetX() + 1] != Static_Alphabet::S)
                 {
                     player.MoveRight();
+                    switch (menu_box[player.GetY()][player.GetX()])
+                    {
+                    case Move_Alphabet::_O:
+                        LetterMove(Static_Alphabet::O, coord_O, 4, _O);
+                        break;
+                    case Move_Alphabet::_P:
+                        LetterMove(Static_Alphabet::P, coord_P, 4, _P);
+                        break;
+                    case Move_Alphabet::_E:
+                        LetterMove(Static_Alphabet::E, coord_E, 4, _E);
+                        break;
+                    case Move_Alphabet::_N:
+                        LetterMove(Static_Alphabet::N, coord_N, 4, _N);
+                        break;
+                    case Move_Alphabet::_Q:
+                        LetterMove(Static_Alphabet::Q, coord_Q, 4, _Q);
+                        break;
+                    case Move_Alphabet::_J:
+                        LetterMove(Static_Alphabet::J, coord_J, 4, _J);
+                        break;
+                    case Move_Alphabet::_K:
+                        LetterMove(Static_Alphabet::K, coord_K, 4, _K);
+                        break;
+                    }
                 }
 
                 //set new coord---------------------------
@@ -415,4 +543,40 @@ public:
 
     }
 
+    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char)
+    {
+        if (menu_box[letter.Y][letter.X] == LevelBox::LEVEL_LETTER_FIELD)
+        {
+            menu_box[letter.Y][letter.X] = LevelBox::LEVEL_LETTER_FIELD;
+        }
+        else
+        {
+            menu_box[letter.Y][letter.X] = Border::EMPTY;
+        }
+        
+        switch (direction)
+        {
+        case 1:
+            letter.Y -= 1; //up
+            break;
+        case 2:
+            letter.Y += 1; // down
+            break;
+        case 3:
+            letter.X -= 1; // left
+            break;
+        case 4:
+            letter.X += 1; // right
+            break;
+        }
+        menu_box[letter.Y][letter.X] = move_char;
+        SetConsoleTextAttribute(h, WHITE);
+        SetConsoleCursorPosition(h, letter);
+        cout << ch;
+
+        for (int i = 0; i < 4; i++)
+        {
+
+        }
+    }
 };
