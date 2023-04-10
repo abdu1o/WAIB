@@ -34,6 +34,23 @@ private:
     COORD field_3{};
     COORD field_4{};
 
+    COORD door{};
+
+    COORD txt{};
+
+    void ShowTxt()
+    {
+        txt.Y = EndHEIGHT + 3;
+        txt.X = 10;
+        SetConsoleTextAttribute(h, CYAN);
+        SetConsoleCursorPosition(h, txt);
+
+        string info = "Press ENTER to restart";
+        for (int i = 0; i < info.length(); i++)
+        {
+            cout << info[i];
+        }
+    }
 
     void OpenDoor()
     {
@@ -47,6 +64,7 @@ private:
                     DOOR.Y = y;
                     DOOR.X = x;
                     SetConsoleCursorPosition(h, DOOR);
+                    menu_box[y][x] = Border::EMPTY;
                     cout << (char)Border::EMPTY;
                 }
             }
@@ -191,6 +209,8 @@ public:
                 else if (x == EndWIDTH - 7 && y >= EndHEIGHT / 2 + 1 && y <= EndHEIGHT / 2 + 3)
                 {
                     menu_box[y][x] = Door::DOOR;
+                    door.X = EndWIDTH - 7;
+                    door.Y = EndHEIGHT / 2 + 1;
                 }
 
 
@@ -252,46 +272,46 @@ public:
 
                 //Move letters =======================================================================
 
-                else if (y == StartHEIGHT + randY[0] && x == StartWIDTH + randX[0])
+                else if (y == StartHEIGHT + randY[0] - 1 && x == StartWIDTH + randX[0])
                 {
                     coord_O.X = StartWIDTH + randX[0];
-                    coord_O.Y = StartHEIGHT + randY[0];
+                    coord_O.Y = StartHEIGHT + randY[0] - 1;
                     menu_box[y][x] = Move_Alphabet::_O;
                 }
-                else if (y == StartHEIGHT + randY[1] && x == StartWIDTH + randX[1])
+                else if (y == StartHEIGHT + randY[1] - 1 && x == StartWIDTH + randX[1])
                 {
                     coord_J.X = StartWIDTH + randX[1];
-                    coord_J.Y = StartHEIGHT + randY[1];
+                    coord_J.Y = StartHEIGHT + randY[1] - 1;
                     menu_box[y][x] = Move_Alphabet::_J;
                 }
-                else if (y == StartHEIGHT + randY[2] && x == StartWIDTH + randX[2])
+                else if (y == StartHEIGHT + randY[2] - 1 && x == StartWIDTH + randX[2])
                 {
                     coord_K.X = StartWIDTH + randX[2];
-                    coord_K.Y = StartHEIGHT + randY[2];
+                    coord_K.Y = StartHEIGHT + randY[2] - 1;
                     menu_box[y][x] = Move_Alphabet::_K;
                 }
-                else if (y == StartHEIGHT + randY[3] && x == StartWIDTH + randX[3])
+                else if (y == StartHEIGHT + randY[3] - 1 && x == StartWIDTH + randX[3])
                 {
                     coord_P.X = StartWIDTH + randX[3];
-                    coord_P.Y = StartHEIGHT + randY[3];
+                    coord_P.Y = StartHEIGHT + randY[3] - 1;
                     menu_box[y][x] = Move_Alphabet::_P;
                 }
-                else if (y == StartHEIGHT + randY[4] && x == StartWIDTH + randX[4])
+                else if (y == StartHEIGHT + randY[4] - 1 && x == StartWIDTH + randX[4])
                 {
                     coord_E.X = StartWIDTH + randX[4];
-                    coord_E.Y = StartHEIGHT + randY[4];
+                    coord_E.Y = StartHEIGHT + randY[4] - 1;
                     menu_box[y][x] = Move_Alphabet::_E;
                 }
-                else if (y == StartHEIGHT + randY[5] && x == StartWIDTH + randX[5])
+                else if (y == StartHEIGHT + randY[5] - 1 && x == StartWIDTH + randX[5])
                 {
                     coord_N.X = StartWIDTH + randX[5];
-                    coord_N.Y = StartHEIGHT + randY[5];
+                    coord_N.Y = StartHEIGHT + randY[5] - 1;
                     menu_box[y][x] = Move_Alphabet::_N;
                 }
-                else if (y == StartHEIGHT + randY[6] && x == StartWIDTH + randX[6])
+                else if (y == StartHEIGHT + randY[6] - 1 && x == StartWIDTH + randX[6])
                 {
                     coord_Q.X = StartWIDTH + randX[6];
-                    coord_Q.Y = StartHEIGHT + randY[6];
+                    coord_Q.Y = StartHEIGHT + randY[6] - 1;
                     menu_box[y][x] = Move_Alphabet::_Q;
                 }
 
@@ -406,6 +426,8 @@ public:
         }
         cout << "\n";
 
+        ShowTxt();
+
         // Movement ====================================================
 
         Move player = { 2, 15, 6 };
@@ -463,6 +485,8 @@ public:
                         menu_box[player.GetY() - 2][player.GetX()] == Static_Alphabet::I ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                         menu_box[player.GetY() - 2][player.GetX()] == Static_Alphabet::S ||
+                        menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_O ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                         menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_P ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
@@ -549,6 +573,8 @@ public:
                          menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY() + 2][player.GetX()] == Static_Alphabet::S ||
                          menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
+                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_O ||
+                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_P ||
                          menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_E ||
@@ -629,6 +655,8 @@ public:
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() - 2] == Static_Alphabet::S ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
+                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_O ||
+                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_P ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_E ||
@@ -643,11 +671,11 @@ public:
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() - 2] == Door::DOOR ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
-                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_01 || 
+                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_01 ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
-                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_02 || 
+                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_02 ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
-                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_03 || 
+                         menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_03 ||
                          menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() - 2] == LevelBox::LEVEL_CORNER_04)
                      {
@@ -718,6 +746,8 @@ public:
                          menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() + 2] == Static_Alphabet::S ||
                          menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
+                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_O ||
+                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_P ||
                          menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_O | _P | _E | _N | _J | _K | _Q &&
                          menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_E ||
@@ -780,18 +810,35 @@ public:
                              break;
                          }
                      }
+                 }
+                //level restart if letter stuck
+                else if(code == KeyCode::ENTER)
+                {
+                    system("cls");
+                    Level1 obj;
+                    obj.Show();
+                }
+
+                //check is win?
+                if (menu_box[field_1.Y][field_1.X] == Move_Alphabet::_O &&
+                    menu_box[field_2.Y][field_2.X] == Move_Alphabet::_P &&
+                    menu_box[field_3.Y][field_3.X] == Move_Alphabet::_E &&
+                    menu_box[field_4.Y][field_4.X] == Move_Alphabet::_N)
+                {
+                    Level1::OpenDoor();
+                }
+
+                //escape 
+                if (player.GetX() >= EndWIDTH)
+                {
+                    system("cls");
+                    //add transition to level map
                 }
 
                 //set new coord---------------------------
                 player.SetPosition();
                 player.SetColor(Color::BLUE);
                 player.PrintEmoji();
-
-
-                if (finish)
-                {
-                    Level1::OpenDoor();
-                }
             }
         }
     }

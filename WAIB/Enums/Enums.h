@@ -109,7 +109,7 @@ enum Move_Alphabet
 	_W,
 	_X,
 	_Y,
-	_Z,
+	_Z
 };
 
 enum LevelBox
