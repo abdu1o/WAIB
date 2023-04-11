@@ -136,11 +136,6 @@ public:
                         menu_box[y][x] = LevelBox::LEVEL_CORNER_04;
                     }
 
-                    /*else if (y == StartHEIGHT + 4 + box_Y && x == StartWIDTH + 2 + box_X)
-                    {
-                        menu_box[y][x] = 100 + steps + 1;
-                    }*/
-
                     // Levels nums
 
                     else if (y == StartHEIGHT + 4 && x == StartWIDTH + 10)
