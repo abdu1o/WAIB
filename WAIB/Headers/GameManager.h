@@ -17,6 +17,7 @@ void Start()
 
 	Menu menu;
 	menu.Show();
+	menu.~Menu();
 
 	//personal console window settings for each computer
 	//change by needed
@@ -27,15 +28,17 @@ void Start()
 	//920 - window height
 
 	LevelMap map;
-	map.Show();
 
-	ConsoleSet(35, 1600, 920);
-
-	/*phrases spoken by Keeper
-	(need to optimize)*/
-	vector<string> txt;
-	switch (map.GetLevelTrigger())
+	while (true)
 	{
+		map.Show();
+		ConsoleSet(35, 1600, 920);
+
+		/*phrases spoken by Keeper
+		(need to optimize)*/
+		vector<string> txt;
+		switch (map.GetLevelTrigger())
+		{
 		case 1://on the LevelMap selected the first level
 		{
 			//WordKeeper keeper;
@@ -55,7 +58,20 @@ void Start()
 
 			Level1 obj;
 			obj.Show();
+			/*obj.~Level1();*/
+			map.nextlevel = true;
+			break;
 		}
+
+		case 2:
+		{
+			Level1 obj;
+			obj.Show();
+			/*obj.~Level1();*/
+			map.nextlevel = false;
+			break;
+		}
+
 		case 3:
 		{
 
@@ -84,5 +100,8 @@ void Start()
 		{
 
 		}
+		}
+		map.Clear();
 	}
+
 }

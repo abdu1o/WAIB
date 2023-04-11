@@ -22,7 +22,7 @@ private:
     HANDLE h;
     COORD menu;
 
-    void OpenDoor(int LevelIndex, int LevelNum)
+    void OpenLevel(int LevelIndex, int LevelNum)
     {
 
         for (int y = 0; y < HEIGHT; y++)
@@ -42,7 +42,10 @@ private:
         }
     }
 
+
 public:
+
+    bool nextlevel = false;
 
     LevelMap()
     {
@@ -290,8 +293,13 @@ public:
         cout << "\n";
 
 
-
         // Movement ====================================================
+
+        if (nextlevel)
+        {
+            LevelMap::OpenLevel(102, 2);
+        }
+
         trigger = 0; //number of selected level, (0) - level not selected
 
         HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -327,10 +335,10 @@ public:
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
                             // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED && nextlevel)
                             {
-                                //LevelMap::OpenDoor(102, 2);
-                                std::cout << "Level 2" << std::endl;
+                                trigger = 2;
+                                break;
                             }
                         }
 
@@ -342,7 +350,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 3" << std::endl;
+                                //std::cout << "Level 3" << std::endl;
                             }
                         }
 
@@ -354,7 +362,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 4" << std::endl;
+                                //std::cout << "Level 4" << std::endl;
                             }
                         }
 
@@ -366,7 +374,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 5" << std::endl;
+                                //std::cout << "Level 5" << std::endl;
                             }
                         }
 
@@ -378,7 +386,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 6" << std::endl;
+                                //std::cout << "Level 6" << std::endl;
                             }
                         }
 
@@ -390,7 +398,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 7" << std::endl;
+                                //std::cout << "Level 7" << std::endl;
                             }
                         }
 
@@ -402,7 +410,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 8" << std::endl;
+                                //std::cout << "Level 8" << std::endl;
                             }
                         }
 
@@ -414,7 +422,7 @@ public:
                             // Open Level
                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
                             {
-                                std::cout << "Level 9" << std::endl;
+                                //std::cout << "Level 9" << std::endl;
                             }
                         }
 
@@ -430,6 +438,13 @@ public:
         }
 
 
+    }
+
+
+
+    void Clear()
+    {
+        system("cls");
     }
 
     const int GetLevelTrigger()
