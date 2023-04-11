@@ -350,7 +350,7 @@ public:
 
         if (nextlevel)
         {
-            LevelMap::OpenLevel(102, 2);
+            LevelMap::OpenLevel(LevelNum::Second, 2);
         }
 
         trigger = 0; //number of selected level, (0) - level not selected
