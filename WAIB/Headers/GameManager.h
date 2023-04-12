@@ -28,11 +28,11 @@ void Start()
 	//920 - window height
 
 	LevelMap map;
+	WordKeeper keeper;
 
 	while (true)
 	{
 		map.Show();
-		ConsoleSet(35, 1600, 920);
 
 		/*phrases spoken by Keeper
 		(need to optimize)*/
@@ -41,33 +41,47 @@ void Start()
 		{
 		case 1://on the LevelMap selected the first level
 		{
-			//WordKeeper keeper;
-			//keeper.Show();
+			ConsoleSet(35, 1600, 920);
+			keeper.Show();
+			txt.clear();
 
-			//txt.push_back("Welcome home traveler!");
-			//txt.push_back("or not home...");
-			//txt.push_back("I am the Word Keeper,");
-			//txt.push_back("and I am here to help you");
-			//txt.push_back("get out of this terrible place.");
-			//txt.push_back("First, try to use your gift of thinking");
+			txt.push_back("Welcome home traveler!");
+			txt.push_back("or not home...");
+			txt.push_back("I am the Word Keeper,");
+			txt.push_back("and I am here to help you");
+			txt.push_back("get out of this terrible place.");
+			txt.push_back("First, try to use your gift of thinking");
 
-			//keeper.Say(txt, 3, 3);
+			keeper.Say(txt, 3, 3);
 			////txt - phrase to say
 			////3 - cord X for start txt 
-			////2 - cord Y for start txt
+			////3 - cord Y for start txt
 
 			Level1 obj;
 			obj.Show();
-			/*obj.~Level1();*/
+			obj.~Level1();
+			ConsoleSet(40, 1600, 1100); 
 			map.nextlevel = true;
 			break;
 		}
 
 		case 2:
 		{
+			ConsoleSet(35, 1600, 920);
+			keeper.Show();
+			txt.clear();
+
+			txt.push_back("Oh! I see that all is not lost with you");
+			txt.push_back("Although it was too easy...");
+			txt.push_back("for the experimental children                      ");
+			txt.push_back("Anyway, try to come up with something new this time");
+
+			keeper.Say(txt, 3, 3);
+
 			Level1 obj;
 			obj.Show();
-			/*obj.~Level1();*/
+			obj.~Level1();
+			ConsoleSet(40, 1600, 1100);
 			map.nextlevel = false;
 			break;
 		}

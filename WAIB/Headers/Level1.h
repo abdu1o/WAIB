@@ -435,7 +435,7 @@ public:
         player.SetColor(Color::BLUE);
         player.PrintEmoji();
 
-        /*Level1::OpenDoor();*/
+        Level1::OpenDoor();
 
         while (true)
         {

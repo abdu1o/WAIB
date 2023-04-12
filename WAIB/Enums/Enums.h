@@ -124,3 +124,5 @@ enum LevelBox
 };
 
 enum MenuWords { PLAY = 31, CREATORS = 32, EXIT = 33 }; // words protect 
+
+enum LevelNum { First = 101, Second = 102, Third = 103, Fourth = 104, Fifth = 105, Sixth = 106, Seventh = 107, Eighth = 108, Ninth = 109 };

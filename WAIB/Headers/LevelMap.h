@@ -45,7 +45,7 @@ private:
 
 public:
 
-    bool nextlevel = false;
+    bool nextlevel = true;
 
     LevelMap()
     {
@@ -136,9 +136,56 @@ public:
                         menu_box[y][x] = LevelBox::LEVEL_CORNER_04;
                     }
 
-                    else if (y == StartHEIGHT + 4 + box_Y && x == StartWIDTH + 2 + box_X)
+                    // Levels nums
+
+                    else if (y == StartHEIGHT + 4 && x == StartWIDTH + 10)
                     {
-                        menu_box[y][x] = 100 + steps + 1;
+                        menu_box[y][x] = LevelNum::First;
+                    }
+
+
+                    else if (y == StartHEIGHT + 4 && x == StartWIDTH + 28)
+                    {
+                        menu_box[y][x] = LevelNum::Second;
+                    }
+
+                    else if (y == StartHEIGHT + 4 && x == StartWIDTH + 46)
+                    {
+                        menu_box[y][x] = LevelNum::Third;
+                    }
+
+
+                    else if (y == StartHEIGHT + 10 && x == StartWIDTH + 10)
+                    {
+                        menu_box[y][x] = LevelNum::Sixth;
+                    }
+
+
+                    else if (y == StartHEIGHT + 10 && x == StartWIDTH + 28)
+                    {
+                        menu_box[y][x] = LevelNum::Fifth;
+                    }
+
+                    else if (y == StartHEIGHT + 10 && x == StartWIDTH + 46)
+                    {
+                        menu_box[y][x] = LevelNum::Fourth;
+                    }
+
+
+                    else if (y == StartHEIGHT + 16 && x == StartWIDTH + 10)
+                    {
+                        menu_box[y][x] = LevelNum::Seventh;
+                    }
+
+
+                    else if (y == StartHEIGHT + 16 && x == StartWIDTH + 28)
+                    {
+                        menu_box[y][x] = LevelNum::Eighth;
+                    }
+
+                    else if (y == StartHEIGHT + 16 && x == StartWIDTH + 46)
+                    {
+                        menu_box[y][x] = LevelNum::Ninth;
                     }
 
                     steps++;
@@ -239,47 +286,47 @@ public:
                     cout << (char)Border::CORNER_04;
                     break;
 
-                case 101: // Level 1
+                case LevelNum::First: // Level 1
                     SetConsoleTextAttribute(h, GREEN);
                     cout << "1";
                     break;
 
-                case 102: // Level 2
+                case LevelNum::Second: // Level 2
                     SetConsoleTextAttribute(h, RED);
                     cout << "2";
                     break;
 
-                case 103: // Level 3
+                case LevelNum::Third: // Level 3
                     SetConsoleTextAttribute(h, RED);
                     cout << "3";
                     break;
 
-                case 104: // Level 4
+                case LevelNum::Fourth: // Level 4
                     SetConsoleTextAttribute(h, RED);
                     cout << "4";
                     break;
 
-                case 105: // Level 5
+                case LevelNum::Fifth: // Level 5
                     SetConsoleTextAttribute(h, RED);
                     cout << "5";
                     break;
 
-                case 106: // Level 6 
+                case LevelNum::Sixth: // Level 6 
                     SetConsoleTextAttribute(h, RED);
                     cout << "6";
                     break;
 
-                case 107: // Level 7
+                case LevelNum::Seventh: // Level 7
                     SetConsoleTextAttribute(h, RED);
                     cout << "7";
                     break;
 
-                case 108: // Level 8 
+                case LevelNum::Eighth: // Level 8 
                     SetConsoleTextAttribute(h, RED);
                     cout << "8";
                     break;
 
-                case 109: // Level 9
+                case LevelNum::Ninth: // Level 9
                     SetConsoleTextAttribute(h, RED);
                     cout << "9";
                     break;
@@ -293,11 +340,12 @@ public:
         cout << "\n";
 
 
+
         // Movement ====================================================
 
         if (nextlevel)
         {
-            LevelMap::OpenLevel(102, 2);
+            LevelMap::OpenLevel(LevelNum::Second, 2);
         }
 
         trigger = 0; //number of selected level, (0) - level not selected
@@ -324,22 +372,22 @@ public:
                         if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 1
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED /*&& condition?*/)
-                            {
-                                trigger = 1;
-                                break;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED /*&& condition?*/)
+                             {
+                                 trigger = 1;
+                                 break;
+                             }
                         }
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 2
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED && nextlevel)
-                            {
-                                trigger = 2;
-                                break;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED && nextlevel)
+                             {
+                                 trigger = 2;
+                                 break;
+                             }
                         }
 
 
@@ -347,11 +395,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 3
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 3 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 5)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 3" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 3" << std::endl;
+                             }
                         }
 
 
@@ -359,11 +407,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 4
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 4" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 4" << std::endl;
+                             }
                         }
 
 
@@ -371,11 +419,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 5
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 5" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 5" << std::endl;
+                             }
                         }
 
 
@@ -383,11 +431,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 6
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 9 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 11)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 6" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 6" << std::endl;
+                             }
                         }
 
 
@@ -395,11 +443,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 8 && mouseEvent.dwMousePosition.X <= StartWIDTH + 12 // Level 7
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 7" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 7" << std::endl;
+                             }
                         }
 
 
@@ -407,11 +455,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 26 && mouseEvent.dwMousePosition.X <= StartWIDTH + 30 // Level 8
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 8" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 8" << std::endl;
+                             }
                         }
 
 
@@ -419,11 +467,11 @@ public:
                         else if (mouseEvent.dwMousePosition.X >= StartWIDTH + 44 && mouseEvent.dwMousePosition.X <= StartWIDTH + 48 // Level 9
                             && mouseEvent.dwMousePosition.Y >= StartHEIGHT + 15 && mouseEvent.dwMousePosition.Y <= StartHEIGHT + 17)
                         {
-                            // Open Level
-                            if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
-                            {
-                                //std::cout << "Level 9" << std::endl;
-                            }
+                             // Open Level
+                             if (mouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)
+                             {
+                                 //std::cout << "Level 9" << std::endl;
+                             }
                         }
 
                     }
@@ -451,4 +499,14 @@ public:
     {
         return trigger;
     }
+};
+
+
+class test
+{
+private:
+    int i;
+
+public:
+    void Show();
 };

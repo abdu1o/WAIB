@@ -114,7 +114,7 @@ public:
 				cout << phrase[i][j];
 				Sleep(25);
 			}
-			Sleep(250);
+			Sleep(350);
 			//transition to new line
 			txt.Y++;
 			SetConsoleCursorPosition(h, txt);
