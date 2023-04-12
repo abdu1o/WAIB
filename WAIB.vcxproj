@@ -22,10 +22,12 @@
     <ClCompile Include="WAIB\WAIB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Level2.h" />
     <ClInclude Include="WAIB\Enums\Enums.h" />
     <ClInclude Include="WAIB\Headers\ConsoleSetter.h" />
     <ClInclude Include="WAIB\Headers\GameManager.h" />
     <ClInclude Include="WAIB\Headers\Global.h" />
+    <ClInclude Include="WAIB\Headers\Level2.h" />
     <ClInclude Include="WAIB\Headers\LevelMap.h" />
     <ClInclude Include="WAIB\Headers\Level1.h" />
     <ClInclude Include="WAIB\Headers\Menu.h" />

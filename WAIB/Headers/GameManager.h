@@ -4,6 +4,7 @@
 #include "WordKeeper.h"
 #include "LevelMap.h"
 #include "Level1.h"
+#include "Level2.h"
 
 DWORD WINAPI Music_Menu(void* param)
 {
@@ -67,7 +68,7 @@ void Start()
 
 		case 2:
 		{
-			ConsoleSet(35, 1600, 920);
+			/*ConsoleSet(35, 1600, 920);
 			keeper.Show();
 			txt.clear();
 
@@ -76,11 +77,11 @@ void Start()
 			txt.push_back("for the experimental children                      ");
 			txt.push_back("Anyway, try to come up with something new this time");
 
-			keeper.Say(txt, 3, 3);
+			keeper.Say(txt, 3, 3);*/
 
-			Level1 obj;
+			Level2 obj;
 			obj.Show();
-			obj.~Level1();
+			obj.~Level2();
 			ConsoleSet(40, 1600, 1100);
 			map.nextlevel = false;
 			break;

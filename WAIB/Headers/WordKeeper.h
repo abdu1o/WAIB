@@ -112,7 +112,7 @@ public:
 			for (int j = 0; j < phrase[i].length(); j++) //iteration letters of vector element
 			{
 				cout << phrase[i][j];
-				Sleep(25);
+				Sleep(20);
 			}
 			Sleep(350);
 			//transition to new line
