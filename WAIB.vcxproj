@@ -22,7 +22,6 @@
     <ClCompile Include="WAIB\WAIB.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Level2.h" />
     <ClInclude Include="WAIB\Enums\Enums.h" />
     <ClInclude Include="WAIB\Headers\ConsoleSetter.h" />
     <ClInclude Include="WAIB\Headers\GameManager.h" />

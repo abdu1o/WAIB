@@ -1,3 +1,7 @@
 .vs/
 WAIB.vcxproj.filters
 WAIB.vcxproj.user
+Enums/
+Headers/
+Music/
+WAIB.cpp
