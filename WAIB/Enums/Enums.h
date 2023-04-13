@@ -43,12 +43,13 @@ enum Border
 	CORNER_02 = 187,
 	CORNER_03 = 188,
 	CORNER_04 = 200,
-	EMPTY = 255
+	EMPTY = 255,
+	FAKE_EMPTY
 };
 
 enum Door
 {
-	DOOR = 51,
+	DOOR = 999,
 	_DOOR = 177
 };
 
@@ -110,6 +111,7 @@ enum Move_Alphabet
 	_X, _X1, _X2,
 	_Y, _Y1, _Y2,
 	_Z,	_Z1, _Z2
+	
 };
 
 enum LevelBox
@@ -120,7 +122,9 @@ enum LevelBox
 	LEVEL_CORNER_02 = 304,
 	LEVEL_CORNER_03 = 305,
 	LEVEL_CORNER_04 = 306,
-	LEVEL_LETTER_FIELD = 249
+	LEVEL_LETTER_FIELD = 249,
+
+	CAR = 212
 };
 
 enum MenuWords { PLAY = 31, CREATORS = 32, EXIT = 33 }; // words protect 

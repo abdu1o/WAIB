@@ -16,6 +16,6 @@ int main()
 	cursor.bVisible = false;
 	cursor.dwSize = 1;
 	SetConsoleCursorInfo(h, &cursor);
-
+	WordTriggers::level_color = DARKYELLOW;
 	Start();
 }

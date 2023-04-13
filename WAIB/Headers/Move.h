@@ -19,6 +19,11 @@ public:
 		Cursor.Y = y;
 	}
 
+	void SetChar(int ch)
+	{
+		this->emoji = (char)ch;
+	}
+
 	void SetPosition()
 	{
 		SetConsoleCursorPosition(h, Cursor);
