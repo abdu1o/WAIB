@@ -110,8 +110,8 @@ enum Move_Alphabet
 	_W, _W1, _W2,
 	_X, _X1, _X2,
 	_Y, _Y1, _Y2,
-	_Z,	_Z1, _Z2
-	
+	_Z,	_Z1, _Z2,
+	KEY, KEY1, _KEY = 20
 };
 
 enum LevelBox
@@ -124,7 +124,7 @@ enum LevelBox
 	LEVEL_CORNER_04 = 306,
 	LEVEL_LETTER_FIELD = 249,
 
-	CAR = 212
+	CAR = 212,
 };
 
 enum MenuWords { PLAY = 31, CREATORS = 32, EXIT = 33 }; // words protect 

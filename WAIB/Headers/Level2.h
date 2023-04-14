@@ -13,6 +13,10 @@ class WordTriggers
 public:
     static Color level_color;
     static bool car_trigger;
+    static bool clear_trigger;
+    static bool key;
+    static bool keys;
+    static bool wall_trigger;
 
     Color GetColor() 
     {
@@ -24,16 +28,38 @@ public:
         level_color = color;
     }
 
-    void SetCar(bool car)
+    void SetCar(bool trigger)
     {
-        car_trigger = car;
+        car_trigger = trigger;
     }
 
+    void Clear(bool trigger)
+    {
+        clear_trigger = trigger;
+    }
+
+    void SetKey(bool trigger)
+    {
+        key = trigger;
+    }
+
+    void SetKeyS(bool trigger)
+    {
+        keys = trigger;
+    }
+
+    void SetWall(bool trigger)
+    {
+        wall_trigger = trigger;
+    }
 
 };
 
 Color WordTriggers::level_color = DARKYELLOW;
 bool WordTriggers::car_trigger = false;
+bool WordTriggers::clear_trigger = false;
+bool WordTriggers::key = false;
+bool WordTriggers::wall_trigger = false;
 
 class Level2 : public WordTriggers
 {
@@ -53,10 +79,11 @@ private:
 
     bool finish;
 
-    COORD fields[10] = 
+    COORD fields[11] = 
     {
         COORD{}, COORD{}, COORD{}, COORD{}, COORD{},
-        COORD{}, COORD{}, COORD{}, COORD{}, COORD{}
+        COORD{}, COORD{}, COORD{}, COORD{}, COORD{},
+        COORD{}
     };
 
     COORD coord_A1{};
@@ -72,20 +99,55 @@ private:
     COORD coord_W{};
     COORD coord_R{};
     COORD coord_S{};
+
+    COORD coord_KEY{};
+    COORD coord_KEY2{};
     
     COORD txt{};
 
     void ShowTxt()
     {
-        txt.Y = EndHEIGHT + 3;
-        txt.X = 10;
-        SetConsoleTextAttribute(h, CYAN);
-        SetConsoleCursorPosition(h, txt);
-
-        string info = "Press ENTER to restart";
-        for (int i = 0; i < info.length(); i++)
+        if (!clear_trigger)
         {
-            cout << info[i];
+            txt.Y = EndHEIGHT + 3;
+            txt.X = 10;
+            SetConsoleTextAttribute(h, CYAN);
+            SetConsoleCursorPosition(h, txt);
+
+            string info = "Press ENTER to restart";
+            for (int i = 0; i < info.length(); i++)
+            {
+                Sleep(20);
+                cout << info[i];
+            }
+        }
+        else
+        {
+            txt.Y = EndHEIGHT;
+            txt.X = 10;
+            SetConsoleTextAttribute(h, CYAN);
+            SetConsoleCursorPosition(h, txt);
+
+            string txt1 = "Well...";
+            for (int i = 0; i < txt1.length(); i++)
+            {
+                Sleep(20);
+                cout << txt1[i];
+            }
+            Sleep(1000);
+            string txt2 = "I didn`t expect this";
+            for (int i = 0; i < txt2.length(); i++)
+            {
+                Sleep(20);
+                cout << txt2[i];
+            }
+
+            Sleep(1000);
+            txt.Y = 8;
+            txt.X = 60;
+            SetConsoleTextAttribute(h, GREEN);
+            SetConsoleCursorPosition(h, txt);
+            cout << (char)16 << (char)16;
         }
     }
 
@@ -115,7 +177,7 @@ private:
         }
     }
 
-    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char)
+    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char, Color color)
     {
         if (menu_box[letter.Y][letter.X] == LevelBox::LEVEL_LETTER_FIELD)
         {
@@ -142,7 +204,7 @@ private:
             break;
         }
         menu_box[letter.Y][letter.X] = move_char;
-        SetConsoleTextAttribute(h, WHITE);
+        SetConsoleTextAttribute(h, color);
         SetConsoleCursorPosition(h, letter);
         cout << ch;
     }
@@ -163,13 +225,56 @@ private:
         }
         //Car
         else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_C &&
-            menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_A | _A1 &&
-            menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_R)
-        {
-            WordTriggers::SetCar(true);
-            Sleep(50);
-            Restart();
-        }
+                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_A | _A1 &&
+                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_R)
+             {
+                 WordTriggers::SetCar(true);
+                 Sleep(50);
+                 Restart();
+             }
+        //Clear
+        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_C &&
+                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_L | _L1 &&
+                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_E &&
+                 menu_box[fields[3].Y][fields[3].X] == Move_Alphabet::_A | _A1 &&
+                 menu_box[fields[4].Y][fields[4].X] == Move_Alphabet::_R)
+             {
+                 WordTriggers::Clear(true);
+                 Sleep(50);
+                 Restart();
+             }
+        //Key
+        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_K &&
+                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_E &&
+                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_Y)
+             {
+                 WordTriggers::SetKey(true);
+                 Sleep(50);
+                 Restart();
+             }
+        //Air (do nothing)
+        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_A | _A1 &&
+                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_I | _I1 &&
+                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_R)
+             {
+                 Sleep(50);
+                 Restart();
+             }
+        //Wall is air
+        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_W &&
+                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_A | _A1 &&
+                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_L | _L1 &&
+                 menu_box[fields[2].Y][fields[3].X] == Move_Alphabet::_L | _L1 &&
+                 menu_box[fields[4].Y][fields[5].X] == Move_Alphabet::_I | _I1 &&
+                 menu_box[fields[5].Y][fields[6].X] == Move_Alphabet::_S &&
+                 menu_box[fields[7].Y][fields[8].X] == Move_Alphabet::_A | _A1 &&
+                 menu_box[fields[8].Y][fields[9].X] == Move_Alphabet::_I | _I1 &&
+                 menu_box[fields[9].Y][fields[10].X] == Move_Alphabet::_R)
+             {
+                 WordTriggers::SetWall(true);
+                 Sleep(50);
+                 Restart();
+             }
     }
 
     
@@ -199,225 +304,256 @@ public:
         {
             for (int x = 0; x < WIDTH; x++)
             {
-
-                //BORDERS=============================================================================
-                if (y == StartHEIGHT && x == StartWIDTH || y == EndHEIGHT / 2 && x == EndWIDTH - 7)
+                if (!clear_trigger)
                 {
-                    menu_box[y][x] = Border::CORNER_01; // corner 1
-                }
-
-                else if (y == StartHEIGHT && x == EndWIDTH || y == EndHEIGHT / 2 + 4 && x == EndWIDTH)
-                {
-                    menu_box[y][x] = Border::CORNER_02; // corner 2
-                }
-
-                else if (y == EndHEIGHT && x == EndWIDTH || x == EndWIDTH && y == EndHEIGHT / 2)
-                {
-                    menu_box[y][x] = Border::CORNER_03; // corner 3
-                }
-
-                else if (y == EndHEIGHT && x == StartWIDTH || y == EndHEIGHT / 2 + 4 && x == EndWIDTH - 7)
-                {
-                    menu_box[y][x] = Border::CORNER_04; // corner 4
-                }
-
-                else if (y == StartHEIGHT && x >= StartWIDTH && x <= EndWIDTH || y == EndHEIGHT && x >= StartWIDTH && x <= EndWIDTH)
-                {
-                    menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
-                }
-
-                else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x == EndWIDTH && y <= EndHEIGHT / 2 || y >= EndHEIGHT / 2 + 4 && x == EndWIDTH && y <= EndHEIGHT)
-                {
-                    menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
-                }
-
-
-                //Exit ===============================================================================
-
-                else if (y == EndHEIGHT / 2 && x >= EndWIDTH - 7 && x <= EndWIDTH)
-                {
-                    menu_box[y][x] = Border::BORDER_UP_DOWN;
-                }
-
-                else if (y == EndHEIGHT / 2 + 4 && x >= EndWIDTH - 7 && x <= EndWIDTH)
-                {
-                    menu_box[y][x] = Border::BORDER_UP_DOWN;
-                }
-
-                else if (x == EndWIDTH - 7 && y >= EndHEIGHT / 2 + 1 && y <= EndHEIGHT / 2 + 3)
-                {
-                    if (car_trigger)
+                    //BORDERS=============================================================================
+                    if (y == StartHEIGHT && x == StartWIDTH || y == EndHEIGHT / 2 && x == EndWIDTH - 7)
                     {
-                        menu_box[y][x] = Border::FAKE_EMPTY;
+                        menu_box[y][x] = Border::CORNER_01; // corner 1
                     }
+
+                    else if (y == StartHEIGHT && x == EndWIDTH || y == EndHEIGHT / 2 + 4 && x == EndWIDTH)
+                    {
+                        menu_box[y][x] = Border::CORNER_02; // corner 2
+                    }
+
+                    else if (y == EndHEIGHT && x == EndWIDTH || x == EndWIDTH && y == EndHEIGHT / 2)
+                    {
+                        menu_box[y][x] = Border::CORNER_03; // corner 3
+                    }
+
+                    else if (y == EndHEIGHT && x == StartWIDTH || y == EndHEIGHT / 2 + 4 && x == EndWIDTH - 7)
+                    {
+                        menu_box[y][x] = Border::CORNER_04; // corner 4
+                    }
+
+                    else if (y == StartHEIGHT && x >= StartWIDTH && x <= EndWIDTH || y == EndHEIGHT && x >= StartWIDTH && x <= EndWIDTH)
+                    {
+                        menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
+                    }
+
+                    else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x == EndWIDTH && y <= EndHEIGHT / 2 || y >= EndHEIGHT / 2 + 4 && x == EndWIDTH && y <= EndHEIGHT)
+                    {
+                        menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
+                    }
+
+
+                    //if player enter key/keys
+                    else if (key == true && y == StartHEIGHT + 7 && x == 45)
+                    {
+                        coord_KEY.X = 45;
+                        coord_KEY.Y = StartHEIGHT + 7;
+                        menu_box[y][x] = Move_Alphabet::KEY;
+                    }
+
+
+                    //Exit ===============================================================================
+
+                    else if (y == EndHEIGHT / 2 && x >= EndWIDTH - 7 && x <= EndWIDTH)
+                    {
+                        menu_box[y][x] = Border::BORDER_UP_DOWN;
+                    }
+
+                    else if (y == EndHEIGHT / 2 + 4 && x >= EndWIDTH - 7 && x <= EndWIDTH)
+                    {
+                        menu_box[y][x] = Border::BORDER_UP_DOWN;
+                    }
+
+                    else if (x == EndWIDTH - 7 && y >= EndHEIGHT / 2 + 1 && y <= EndHEIGHT / 2 + 3)
+                    {
+                        if (car_trigger)
+                        {
+                            menu_box[y][x] = Border::FAKE_EMPTY;
+                        }
+                        else
+                        {
+                            menu_box[y][x] = Door::DOOR;
+                        }
+                    }
+
+                    //Letter fields ======================================================================
+                    //place to put the letters
+
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 7)
+                    {
+                        fields[0].Y = StartHEIGHT + 3;
+                        fields[0].X = StartWIDTH + 7;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 8)
+                    {
+                        fields[1].Y = StartHEIGHT + 3;
+                        fields[1].X = StartWIDTH + 8;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 9)
+                    {
+                        fields[2].Y = StartHEIGHT + 3;
+                        fields[2].X = StartWIDTH + 9;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 10)
+                    {
+                        fields[3].Y = StartHEIGHT + 3;
+                        fields[3].X = StartWIDTH + 10;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 11)
+                    {
+                        fields[4].Y = StartHEIGHT + 3;
+                        fields[4].X = StartWIDTH + 11;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 12)
+                    {
+                        fields[5].Y = StartHEIGHT + 3;
+                        fields[5].X = StartWIDTH + 12;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 13)
+                    {
+                        fields[6].Y = StartHEIGHT + 3;
+                        fields[6].X = StartWIDTH + 13;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 14)
+                    {
+                        fields[7].Y = StartHEIGHT + 3;
+                        fields[7].X = StartWIDTH + 14;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 15)
+                    {
+                        fields[8].Y = StartHEIGHT + 3;
+                        fields[8].X = StartWIDTH + 15;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 16)
+                    {
+                        fields[9].Y = StartHEIGHT + 3;
+                        fields[9].X = StartWIDTH + 16;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+                    else if (y == StartHEIGHT + 3 && x == StartWIDTH + 17)
+                    {
+                        fields[10].Y = StartHEIGHT + 3;
+                        fields[10].X = StartWIDTH + 17;
+                        menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
+                    }
+
+
+                    //Move letters =======================================================================
+
+                    else if (y == StartHEIGHT + randY[0] - 1 && x == StartWIDTH + randX[0])
+                    {
+                        coord_A1.X = StartWIDTH + randX[0];
+                        coord_A1.Y = StartHEIGHT + randY[0] - 1;
+                        menu_box[y][x] = Move_Alphabet::_A;
+                    }
+                    else if (y == StartHEIGHT + randY[1] - 1 && x == StartWIDTH + randX[1])
+                    {
+                        coord_A2.X = StartWIDTH + randX[1];
+                        coord_A2.Y = StartHEIGHT + randY[1] - 1;
+                        menu_box[y][x] = Move_Alphabet::_A1;
+                    }
+                    else if (y == StartHEIGHT + randY[2] - 1 && x == StartWIDTH + randX[2])
+                    {
+                        coord_L1.X = StartWIDTH + randX[2];
+                        coord_L1.Y = StartHEIGHT + randY[2] - 1;
+                        menu_box[y][x] = Move_Alphabet::_L;
+                    }
+                    else if (y == StartHEIGHT + randY[3] - 1 && x == StartWIDTH + randX[3])
+                    {
+                        coord_L2.X = StartWIDTH + randX[3];
+                        coord_L2.Y = StartHEIGHT + randY[3] - 1;
+                        menu_box[y][x] = Move_Alphabet::_L1;
+                    }
+                    else if (y == StartHEIGHT + randY[4] - 1 && x == StartWIDTH + randX[4])
+                    {
+                        coord_K.X = StartWIDTH + randX[4];
+                        coord_K.Y = StartHEIGHT + randY[4] - 1;
+                        menu_box[y][x] = Move_Alphabet::_K;
+                    }
+                    else if (y == StartHEIGHT + randY[5] - 1 && x == StartWIDTH + randX[5])
+                    {
+                        coord_E.X = StartWIDTH + randX[5];
+                        coord_E.Y = StartHEIGHT + randY[5] - 1;
+                        menu_box[y][x] = Move_Alphabet::_E;
+                    }
+                    else if (y == StartHEIGHT + randY[6] - 1 && x == StartWIDTH + randX[6])
+                    {
+                        coord_Y.X = StartWIDTH + randX[6];
+                        coord_Y.Y = StartHEIGHT + randY[6] - 1;
+                        menu_box[y][x] = Move_Alphabet::_Y;
+                    }
+                    else if (y == StartHEIGHT + randY[7] - 1 && x == StartWIDTH + randX[7])
+                    {
+                        coord_I1.X = StartWIDTH + randX[7];
+                        coord_I1.Y = StartHEIGHT + randY[7] - 1;
+                        menu_box[y][x] = Move_Alphabet::_I;
+                    }
+                    else if (y == StartHEIGHT + randY[8] - 1 && x == StartWIDTH + randX[8])
+                    {
+                        coord_C.X = StartWIDTH + randX[8];
+                        coord_C.Y = StartHEIGHT + randY[8] - 1;
+                        menu_box[y][x] = Move_Alphabet::_C;
+                    }
+                    else if (y == StartHEIGHT + randY[9] - 1 && x == StartWIDTH + randX[9])
+                    {
+                        coord_W.X = StartWIDTH + randX[9];
+                        coord_W.Y = StartHEIGHT + randY[9] - 1;
+                        menu_box[y][x] = Move_Alphabet::_W;
+                    }
+                    else if (y == StartHEIGHT + randY[10] - 1 && x == StartWIDTH + randX[10])
+                    {
+                        coord_R.X = StartWIDTH + randX[10];
+                        coord_R.Y = StartHEIGHT + randY[10] - 1;
+                        menu_box[y][x] = Move_Alphabet::_R;
+                    }
+                    else if (y == StartHEIGHT + randY[11] - 1 && x == StartWIDTH + randX[11])
+                    {
+                        coord_S.X = StartWIDTH + randX[11];
+                        coord_S.Y = StartHEIGHT + randY[11] - 1;
+                        menu_box[y][x] = Move_Alphabet::_S;
+                    }
+                    else if (y == StartHEIGHT + randY[12] - 1 && x == StartWIDTH + randX[12])
+                    {
+                        coord_I2.X = StartWIDTH + randX[12];
+                        coord_I2.Y = StartHEIGHT + randY[12] - 1;
+                        menu_box[y][x] = Move_Alphabet::_I1;
+                    }
+
+                    //====================================================================================
+
                     else
                     {
-                        menu_box[y][x] = Door::DOOR;
+                        menu_box[y][x] = Border::EMPTY;  
                     }
                 }
-
-                //Letter fields ======================================================================
-                //place to put the letters
-
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 7)
-                {
-                    fields[0].Y = StartHEIGHT + 3;
-                    fields[0].X = StartWIDTH + 7;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 8)
-                {
-                    fields[1].Y = StartHEIGHT + 3;
-                    fields[1].X = StartWIDTH + 8;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 9)
-                {
-                    fields[2].Y = StartHEIGHT + 3;
-                    fields[2].X = StartWIDTH + 9;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 10)
-                {
-                    fields[3].Y = StartHEIGHT + 3;
-                    fields[3].X = StartWIDTH + 10;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 11)
-                {
-                    fields[4].Y = StartHEIGHT + 3;
-                    fields[4].X = StartWIDTH + 11;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 12)
-                {
-                    fields[5].Y = StartHEIGHT + 3;
-                    fields[5].X = StartWIDTH + 12;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 13)
-                {
-                    fields[6].Y = StartHEIGHT + 3;
-                    fields[6].X = StartWIDTH + 13;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 14)
-                {
-                    fields[7].Y = StartHEIGHT + 3;
-                    fields[7].X = StartWIDTH + 14;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 15)
-                {
-                    fields[8].Y = StartHEIGHT + 3;
-                    fields[8].X = StartWIDTH + 15;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 16)
-                {
-                    fields[9].Y = StartHEIGHT + 3;
-                    fields[9].X = StartWIDTH + 16;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                else if (y == StartHEIGHT + 3 && x == StartWIDTH + 17)
-                {
-                    fields[10].Y = StartHEIGHT + 3;
-                    fields[10].X = StartWIDTH + 17;
-                    menu_box[y][x] = LevelBox::LEVEL_LETTER_FIELD;
-                }
-                
-
-                //Move letters =======================================================================
-
-                else if (y == StartHEIGHT + randY[0] - 1 && x == StartWIDTH + randX[0])
-                {
-                    coord_A1.X = StartWIDTH + randX[0];
-                    coord_A1.Y = StartHEIGHT + randY[0] - 1;
-                    menu_box[y][x] = Move_Alphabet::_A;
-                }
-                else if (y == StartHEIGHT + randY[1] - 1 && x == StartWIDTH + randX[1])
-                {
-                    coord_A2.X = StartWIDTH + randX[1];
-                    coord_A2.Y = StartHEIGHT + randY[1] - 1;
-                    menu_box[y][x] = Move_Alphabet::_A1;
-                }
-                else if (y == StartHEIGHT + randY[2] - 1 && x == StartWIDTH + randX[2])
-                {
-                    coord_L1.X = StartWIDTH + randX[2];
-                    coord_L1.Y = StartHEIGHT + randY[2] - 1;
-                    menu_box[y][x] = Move_Alphabet::_L;
-                }
-                else if (y == StartHEIGHT + randY[3] - 1 && x == StartWIDTH + randX[3])
-                {
-                    coord_L2.X = StartWIDTH + randX[3];
-                    coord_L2.Y = StartHEIGHT + randY[3] - 1;
-                    menu_box[y][x] = Move_Alphabet::_L1;
-                }
-                else if (y == StartHEIGHT + randY[4] - 1 && x == StartWIDTH + randX[4])
-                {
-                    coord_K.X = StartWIDTH + randX[4];
-                    coord_K.Y = StartHEIGHT + randY[4] - 1;
-                    menu_box[y][x] = Move_Alphabet::_K;
-                }
-                else if (y == StartHEIGHT + randY[5] - 1 && x == StartWIDTH + randX[5])
-                {
-                    coord_E.X = StartWIDTH + randX[5];
-                    coord_E.Y = StartHEIGHT + randY[5] - 1;
-                    menu_box[y][x] = Move_Alphabet::_E;
-                }
-                else if (y == StartHEIGHT + randY[6] - 1 && x == StartWIDTH + randX[6])
-                {
-                    coord_Y.X = StartWIDTH + randX[6];
-                    coord_Y.Y = StartHEIGHT + randY[6] - 1;
-                    menu_box[y][x] = Move_Alphabet::_Y;
-                }
-                else if (y == StartHEIGHT + randY[7] - 1 && x == StartWIDTH + randX[7])
-                {
-                    coord_I1.X = StartWIDTH + randX[7];
-                    coord_I1.Y = StartHEIGHT + randY[7] - 1;
-                    menu_box[y][x] = Move_Alphabet::_I;
-                }
-                else if (y == StartHEIGHT + randY[8] - 1 && x == StartWIDTH + randX[8])
-                {
-                    coord_C.X = StartWIDTH + randX[8];
-                    coord_C.Y = StartHEIGHT + randY[8] - 1;
-                    menu_box[y][x] = Move_Alphabet::_C;
-                }
-                else if (y == StartHEIGHT + randY[9] - 1 && x == StartWIDTH + randX[9])
-                {
-                    coord_W.X = StartWIDTH + randX[9];
-                    coord_W.Y = StartHEIGHT + randY[9] - 1;
-                    menu_box[y][x] = Move_Alphabet::_W;
-                }
-                else if (y == StartHEIGHT + randY[10] - 1 && x == StartWIDTH + randX[10])
-                {
-                    coord_R.X = StartWIDTH + randX[10];
-                    coord_R.Y = StartHEIGHT + randY[10] - 1;
-                    menu_box[y][x] = Move_Alphabet::_R;
-                }
-                else if (y == StartHEIGHT + randY[11] - 1 && x == StartWIDTH + randX[11])
-                {
-                    coord_S.X = StartWIDTH + randX[11];
-                    coord_S.Y = StartHEIGHT + randY[11] - 1;
-                    menu_box[y][x] = Move_Alphabet::_S;
-                }
-                else if (y == StartHEIGHT + randY[12] - 1 && x == StartWIDTH + randX[12])
-                {
-                    coord_I2.X = StartWIDTH + randX[12];
-                    coord_I2.Y = StartHEIGHT + randY[12] - 1;
-                    menu_box[y][x] = Move_Alphabet::_I1;
-                }
-
-                //====================================================================================
-
                 else
                 {
-                    menu_box[y][x] = Border::EMPTY; // 
+                    menu_box[y][x] = Border::EMPTY;
                 }
-
             }
         }
 
+        if (wall_trigger)
+        {
+            for (int y = 0; y < HEIGHT; y++)
+            {
+                for (int x = 0; x < WIDTH; x++)
+                {
+                    if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH)
+                    {
+                        COORD NoWall;
+                        NoWall.Y = y;
+                        NoWall.X = x;
+                        SetConsoleCursorPosition(h, NoWall);
+                        menu_box[y][x] = Border::EMPTY;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -521,6 +657,10 @@ public:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::S;
                     break;
+                case Move_Alphabet::KEY:
+                    SetConsoleTextAttribute(h, YELLOW);
+                    cout << (char)Move_Alphabet::_KEY;
+                    break;
                 }
             }
             cout << "\n";
@@ -528,13 +668,12 @@ public:
         cout << "\n";
 
         ShowTxt();
-
         // Movement ====================================================
 
         Move player;
         if (car_trigger)
         {
-            player = { 22, 15, 6 };
+            player = { 26, 15, 6 };
         }
         else
         {
@@ -623,43 +762,46 @@ public:
                         switch (menu_box[player.GetY()][player.GetX()])
                         {
                         case Move_Alphabet::_A:
-                            LetterMove(Static_Alphabet::A, coord_A1, 1, _A);
+                            LetterMove(Static_Alphabet::A, coord_A1, 1, _A, WHITE);
                             break;
                         case Move_Alphabet::_A1:
-                            LetterMove(Static_Alphabet::A, coord_A2, 1, _A1);
+                            LetterMove(Static_Alphabet::A, coord_A2, 1, _A1, WHITE);
                             break;
                         case Move_Alphabet::_L:
-                            LetterMove(Static_Alphabet::L, coord_L1, 1, _L);
+                            LetterMove(Static_Alphabet::L, coord_L1, 1, _L, WHITE);
                             break;
                         case Move_Alphabet::_L1:
-                            LetterMove(Static_Alphabet::L, coord_L2, 1, _L1);
+                            LetterMove(Static_Alphabet::L, coord_L2, 1, _L1, WHITE);
                             break;
                         case Move_Alphabet::_K:
-                            LetterMove(Static_Alphabet::K, coord_K, 1, _K);
+                            LetterMove(Static_Alphabet::K, coord_K, 1, _K, WHITE);
                             break;
                         case Move_Alphabet::_E:
-                            LetterMove(Static_Alphabet::E, coord_E, 1, _E);
+                            LetterMove(Static_Alphabet::E, coord_E, 1, _E, WHITE);
                             break;
                         case Move_Alphabet::_Y:
-                            LetterMove(Static_Alphabet::Y, coord_Y, 1, _Y);
+                            LetterMove(Static_Alphabet::Y, coord_Y, 1, _Y, WHITE);
                             break;
                         case Move_Alphabet::_I:
-                            LetterMove(Static_Alphabet::I, coord_I1, 1, _I);
+                            LetterMove(Static_Alphabet::I, coord_I1, 1, _I, WHITE);
                             break;
                         case Move_Alphabet::_I1:
-                            LetterMove(Static_Alphabet::I, coord_I2, 1, _I1);
+                            LetterMove(Static_Alphabet::I, coord_I2, 1, _I1, WHITE);
                             break;
                         case Move_Alphabet::_C:
-                            LetterMove(Static_Alphabet::C, coord_C, 1, _C);
+                            LetterMove(Static_Alphabet::C, coord_C, 1, _C, WHITE);
                             break;
                         case Move_Alphabet::_W:
-                            LetterMove(Static_Alphabet::W, coord_W, 1, _W);
+                            LetterMove(Static_Alphabet::W, coord_W, 1, _W, WHITE);
                             break;
                         case Move_Alphabet::_R:
-                            LetterMove(Static_Alphabet::R, coord_R, 1, _R);
+                            LetterMove(Static_Alphabet::R, coord_R, 1, _R, WHITE);
                             break;
                         case Move_Alphabet::_S:
-                            LetterMove(Static_Alphabet::S, coord_S, 1, _S);
+                            LetterMove(Static_Alphabet::S, coord_S, 1, _S, WHITE);
+                            break;
+                        case Move_Alphabet::KEY:
+                            LetterMove(Move_Alphabet::_KEY, coord_KEY, 1, KEY, YELLOW);
                             break;
                         }
                     }
@@ -711,43 +853,46 @@ public:
                          switch (menu_box[player.GetY()][player.GetX()])
                          {
                          case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 2, _A);
+                             LetterMove(Static_Alphabet::A, coord_A1, 2, _A, WHITE);
                              break;
                          case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 2, _A1);
+                             LetterMove(Static_Alphabet::A, coord_A2, 2, _A1, WHITE);
                              break;
                          case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 2, _L);
+                             LetterMove(Static_Alphabet::L, coord_L1, 2, _L, WHITE);
                              break;
                          case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 2, _L1);
+                             LetterMove(Static_Alphabet::L, coord_L2, 2, _L1, WHITE);
                              break;
                          case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 2, _K);
+                             LetterMove(Static_Alphabet::K, coord_K, 2, _K, WHITE);
                              break;
                          case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 2, _E);
+                             LetterMove(Static_Alphabet::E, coord_E, 2, _E, WHITE);
                              break;
                          case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 2, _Y);
+                             LetterMove(Static_Alphabet::Y, coord_Y, 2, _Y, WHITE);
                              break;
                          case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 2, _I);
+                             LetterMove(Static_Alphabet::I, coord_I1, 2, _I, WHITE);
                              break;
                          case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 2, _I1);
+                             LetterMove(Static_Alphabet::I, coord_I2, 2, _I1, WHITE);
                              break;
                          case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 2, _C);
+                             LetterMove(Static_Alphabet::C, coord_C, 2, _C, WHITE);
                              break;
                          case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 2, _W);
+                             LetterMove(Static_Alphabet::W, coord_W, 2, _W, WHITE);
                              break;
                          case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 2, _R);
+                             LetterMove(Static_Alphabet::R, coord_R, 2, _R, WHITE);
                              break;
                          case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 2, _S);
+                             LetterMove(Static_Alphabet::S, coord_S, 2, _S, WHITE);
+                             break;
+                         case Move_Alphabet::KEY:
+                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 2, KEY, YELLOW);
                              break;
                          }
                      }
@@ -807,43 +952,46 @@ public:
                          switch (menu_box[player.GetY()][player.GetX()])
                          {
                          case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 3, _A);
+                             LetterMove(Static_Alphabet::A, coord_A1, 3, _A, WHITE);
                              break;
                          case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 3, _A1);
+                             LetterMove(Static_Alphabet::A, coord_A2, 3, _A1, WHITE);
                              break;
                          case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 3, _L);
+                             LetterMove(Static_Alphabet::L, coord_L1, 3, _L, WHITE);
                              break;
                          case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 3, _L1);
+                             LetterMove(Static_Alphabet::L, coord_L2, 3, _L1, WHITE);
                              break;
                          case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 3, _K);
+                             LetterMove(Static_Alphabet::K, coord_K, 3, _K, WHITE);
                              break;
                          case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 3, _E);
+                             LetterMove(Static_Alphabet::E, coord_E, 3, _E, WHITE);
                              break;
                          case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 3, _Y);
+                             LetterMove(Static_Alphabet::Y, coord_Y, 3, _Y, WHITE);
                              break;
                          case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 3, _I);
+                             LetterMove(Static_Alphabet::I, coord_I1, 3, _I, WHITE);
                              break;
                          case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 3, _I1);
+                             LetterMove(Static_Alphabet::I, coord_I2, 3, _I1, WHITE);
                              break;
                          case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 3, _C);
+                             LetterMove(Static_Alphabet::C, coord_C, 3, _C, WHITE);
                              break;
                          case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 3, _W);
+                             LetterMove(Static_Alphabet::W, coord_W, 3, _W, WHITE);
                              break;
                          case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 3, _R);
+                             LetterMove(Static_Alphabet::R, coord_R, 3, _R, WHITE);
                              break;
                          case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 3, _S);
+                             LetterMove(Static_Alphabet::S, coord_S, 3, _S, WHITE);
+                             break;
+                         case Move_Alphabet::KEY:
+                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 3, KEY, YELLOW);
                              break;
                          }
                      }
@@ -902,71 +1050,97 @@ public:
                          switch (menu_box[player.GetY()][player.GetX()])
                          {
                          case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 4, _A);
+                             LetterMove(Static_Alphabet::A, coord_A1, 4, _A, WHITE);
                              break;
                          case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 4, _A1);
+                             LetterMove(Static_Alphabet::A, coord_A2, 4, _A1, WHITE);
                              break;
                          case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 4, _L);
+                             LetterMove(Static_Alphabet::L, coord_L1, 4, _L, WHITE);
                              break;
                          case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 4, _L1);
+                             LetterMove(Static_Alphabet::L, coord_L2, 4, _L1, WHITE);
                              break;
                          case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 4, _K);
+                             LetterMove(Static_Alphabet::K, coord_K, 4, _K, WHITE);
                              break;
                          case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 4, _E);
+                             LetterMove(Static_Alphabet::E, coord_E, 4, _E, WHITE);
                              break;
                          case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 4, _Y);
+                             LetterMove(Static_Alphabet::Y, coord_Y, 4, _Y, WHITE);
                              break;
                          case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 4, _I);
+                             LetterMove(Static_Alphabet::I, coord_I1, 4, _I, WHITE);
                              break;
                          case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 4, _I1);
+                             LetterMove(Static_Alphabet::I, coord_I2, 4, _I1, WHITE);
                              break;
                          case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 4, _C);
+                             LetterMove(Static_Alphabet::C, coord_C, 4, _C, WHITE);
                              break;
                          case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 4, _W);
+                             LetterMove(Static_Alphabet::W, coord_W, 4, _W, WHITE);
                              break;
                          case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 4, _R);
+                             LetterMove(Static_Alphabet::R, coord_R, 4, _R, WHITE);
                              break;
                          case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 4, _S);
+                             LetterMove(Static_Alphabet::S, coord_S, 4, _S, WHITE);
+                             break;
+                         case Move_Alphabet::KEY:
+                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 4, KEY, YELLOW);
                              break;
                          }
                      }
                 }
-
                 //level restart if letter stuck
                 else if (code == KeyCode::ENTER)
                 {
                     Restart();
                 }
 
-                CheckWords();
-                
-
-                //escape 
-                if (player.GetX() >= EndWIDTH)
-                {
-                    system("cls");
-                    //add transition to level map         
-                    break;
-                }
-
                 //set new coord---------------------------
                 player.SetPosition();
                 player.SetColor(Color::BLUE);
                 player.PrintEmoji();
+
+                CheckWords();
+                
+                if (coord_KEY.X == EndWIDTH - 7)
+                {
+                    OpenDoor();
+                }
+
+                //escape 
+                if (player.GetX() >= EndWIDTH + 1)
+                {
+                    system("cls");
+                    SetColor(DARKYELLOW);
+                    SetCar(false);
+                    Clear(false);
+                    SetKey(false);
+                    for (int y = 0; y < HEIGHT; y++)
+                    {
+                        for (int x = 0; x < WIDTH; x++)
+                        {
+                            if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH)
+                            {
+                                COORD NoWall;
+                                NoWall.Y = y;
+                                NoWall.X = x;
+                                SetConsoleCursorPosition(h, NoWall);
+                                menu_box[y][x] = LevelBox::LEVEL_BORDER_LEFT_RIGHT;
+                            }
+                        }
+                    }
+                    SetWall(false);
+                    menu_box[coord_KEY.X][coord_KEY.Y] = Border::EMPTY;
+                    SetConsoleCursorPosition(h, coord_KEY);
+                    cout << (char)Border::EMPTY;
+                    break;
+                } 
             }
         }
-
     }
 };

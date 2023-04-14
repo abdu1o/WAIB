@@ -35,8 +35,6 @@ void Start()
 	{
 		map.Show();
 
-		/*phrases spoken by Keeper
-		(need to optimize)*/
 		vector<string> txt;
 		switch (map.GetLevelTrigger())
 		{
@@ -68,7 +66,7 @@ void Start()
 
 		case 2:
 		{
-			/*ConsoleSet(35, 1600, 920);
+			ConsoleSet(35, 1600, 920);
 			keeper.Show();
 			txt.clear();
 
@@ -77,7 +75,7 @@ void Start()
 			txt.push_back("for the experimental children                      ");
 			txt.push_back("Anyway, try to come up with something new this time");
 
-			keeper.Say(txt, 3, 3);*/
+			keeper.Say(txt, 3, 3);
 
 			Level2 obj;
 			obj.Show();
