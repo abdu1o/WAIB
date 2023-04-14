@@ -45,7 +45,7 @@ private:
 
 public:
 
-    bool nextlevel = 1;
+    bool nextlevel = true;
 
     LevelMap()
     {

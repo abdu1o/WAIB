@@ -2,14 +2,11 @@
 #include "Move.h"
 #include "Enums/Enums.h"
 
-
 DWORD WINAPI SecretMusic(void* param)
 {
     PlaySoundA("WAIB/Music/secret_music.WAV", NULL, SND_LOOP | SND_ASYNC);
     return 0;
 }
-
-
 
 class WordTriggers
 {
@@ -148,8 +145,6 @@ protected:
         }
     }
 
-
-
     virtual void Restart()
     {
         system("cls");
@@ -217,7 +212,7 @@ protected:
             menu_box[fields[3].Y][fields[3].X] == Move_Alphabet::_C &&
             menu_box[fields[4].Y][fields[4].X] == Move_Alphabet::_E)
         {
-            WordTriggers::SetColor(DARKGREEN);
+            WordTriggers::SetColor(DARKYELLOW);
             Sleep(50);
             CreateThread(0, 0, SecretMusic, 0, 0, 0);
             Restart();
