@@ -274,6 +274,16 @@ public:
                 }
             }
         }
+
+        SetColor(DARKYELLOW);
+        SetCar(false);
+        Clear(false);
+        SetKey(false);
+        SetWall(false);
+
+        menu_box[coord_KEY.X][coord_KEY.Y] = Border::EMPTY;
+        SetConsoleCursorPosition(h, coord_KEY);
+        cout << (char)Border::EMPTY;
     }
 
 
@@ -836,15 +846,6 @@ public:
                 if (player.GetX() >= EndWIDTH + 1)
                 {
                     system("cls");
-                    SetColor(DARKYELLOW);
-                    SetCar(false);
-                    Clear(false);
-                    SetKey(false);
-                    SetWall(false);
-                    
-                    menu_box[coord_KEY.X][coord_KEY.Y] = Border::EMPTY;
-                    SetConsoleCursorPosition(h, coord_KEY);
-                    cout << (char)Border::EMPTY;
                     break;
                 }
             }

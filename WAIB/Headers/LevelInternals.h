@@ -45,11 +45,6 @@ public:
         key = trigger;
     }
 
-    void SetKeyS(bool trigger)
-    {
-        keys = trigger;
-    }
-
     void SetWall(bool trigger)
     {
         wall_trigger = trigger;
