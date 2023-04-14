@@ -52,7 +52,6 @@ public:
 
 };
 
-
 Color WordTriggers::level_color = DARKYELLOW;
 bool WordTriggers::car_trigger = false;
 bool WordTriggers::clear_trigger = false;
