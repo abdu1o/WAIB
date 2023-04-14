@@ -151,7 +151,7 @@ protected:
 
 
 
-    void Restart()
+    virtual void Restart()
     {
         system("cls");
         LevelInternals obj;

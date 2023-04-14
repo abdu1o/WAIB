@@ -15,6 +15,13 @@ class Level2 : public LevelInternals
 {
 private:
 
+    void Restart() override
+    {
+        system("cls");
+        Level2 obj;
+        obj.Show();
+    }
+
 public:
 
     Level2()
