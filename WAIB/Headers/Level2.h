@@ -1,283 +1,19 @@
 #include "Global.h"
 #include "Move.h"
 #include "Enums/Enums.h"
+#include "LevelInternals.h";
 
-DWORD WINAPI SecretMusic(void* param)
-{
-    PlaySoundA("WAIB/Music/secret_music.WAV", NULL, SND_LOOP | SND_ASYNC);
-    return 0;
-}
 
-class WordTriggers
-{
-public:
-    static Color level_color;
-    static bool car_trigger;
-    static bool clear_trigger;
-    static bool key;
-    static bool keys;
-    static bool wall_trigger;
-
-    Color GetColor() 
-    {
-        return level_color;
-    }
-
-    void SetColor(Color color) 
-    {
-        level_color = color;
-    }
-
-    void SetCar(bool trigger)
-    {
-        car_trigger = trigger;
-    }
-
-    void Clear(bool trigger)
-    {
-        clear_trigger = trigger;
-    }
-
-    void SetKey(bool trigger)
-    {
-        key = trigger;
-    }
-
-    void SetKeyS(bool trigger)
-    {
-        keys = trigger;
-    }
-
-    void SetWall(bool trigger)
-    {
-        wall_trigger = trigger;
-    }
-
-};
-
-Color WordTriggers::level_color = DARKYELLOW;
-bool WordTriggers::car_trigger = false;
-bool WordTriggers::clear_trigger = false;
-bool WordTriggers::key = false;
-bool WordTriggers::wall_trigger = false;
-
-class Level2 : public WordTriggers
+class Level2 : public LevelInternals
 {
 private:
-    static const int WIDTH = 60;
-    static const int HEIGHT = 18;
 
-    static const int StartWIDTH = 10;
-    static const int StartHEIGHT = 3;
-
-    static const int EndWIDTH = WIDTH - 1;
-    static const int EndHEIGHT = HEIGHT - 1;
-
-    int menu_box[HEIGHT][WIDTH] = {};
-
-    HANDLE h;
-
-    bool finish;
-
-    COORD fields[11] = 
-    {
-        COORD{}, COORD{}, COORD{}, COORD{}, COORD{},
-        COORD{}, COORD{}, COORD{}, COORD{}, COORD{},
-        COORD{}
-    };
-
-    COORD coord_A1{};
-    COORD coord_A2{};
-    COORD coord_L1{};
-    COORD coord_L2{};
-    COORD coord_K{};
-    COORD coord_E{};
-    COORD coord_Y{};
-    COORD coord_I1{};
-    COORD coord_I2{};
-    COORD coord_C{};
-    COORD coord_W{};
-    COORD coord_R{};
-    COORD coord_S{};
-
-    COORD coord_KEY{};
-    COORD coord_KEY2{};
-    
-    COORD txt{};
-
-    void ShowTxt()
-    {
-        if (!clear_trigger)
-        {
-            txt.Y = EndHEIGHT + 3;
-            txt.X = 10;
-            SetConsoleTextAttribute(h, CYAN);
-            SetConsoleCursorPosition(h, txt);
-
-            string info = "Press ENTER to restart";
-            for (int i = 0; i < info.length(); i++)
-            {
-                Sleep(20);
-                cout << info[i];
-            }
-        }
-        else
-        {
-            txt.Y = EndHEIGHT;
-            txt.X = 10;
-            SetConsoleTextAttribute(h, CYAN);
-            SetConsoleCursorPosition(h, txt);
-
-            string txt1 = "Well...";
-            for (int i = 0; i < txt1.length(); i++)
-            {
-                Sleep(20);
-                cout << txt1[i];
-            }
-            Sleep(1000);
-            string txt2 = "I didn`t expect this";
-            for (int i = 0; i < txt2.length(); i++)
-            {
-                Sleep(20);
-                cout << txt2[i];
-            }
-
-            Sleep(1000);
-            txt.Y = 8;
-            txt.X = 60;
-            SetConsoleTextAttribute(h, GREEN);
-            SetConsoleCursorPosition(h, txt);
-            cout << (char)16 << (char)16;
-        }
-    }
-
-    void Restart()
+    void Restart() override
     {
         system("cls");
         Level2 obj;
         obj.Show();
     }
-
-    void OpenDoor()
-    {
-        for (int y = 0; y < HEIGHT; y++)
-        {
-            for (int x = 0; x < WIDTH; x++)
-            {
-                if (menu_box[y][x] == Door::DOOR)
-                {
-                    COORD DOOR;
-                    DOOR.Y = y;
-                    DOOR.X = x;
-                    SetConsoleCursorPosition(h, DOOR);
-                    menu_box[y][x] = Border::EMPTY;
-                    cout << (char)Border::EMPTY;
-                }
-            }
-        }
-    }
-
-    void LetterMove(char ch, COORD& letter, int direction, Move_Alphabet move_char, Color color)
-    {
-        if (menu_box[letter.Y][letter.X] == LevelBox::LEVEL_LETTER_FIELD)
-        {
-            menu_box[letter.Y][letter.X] = LevelBox::LEVEL_LETTER_FIELD;
-        }
-        else
-        {
-            menu_box[letter.Y][letter.X] = Border::EMPTY;
-        }
-
-        switch (direction)
-        {
-        case 1:
-            letter.Y -= 1; //up
-            break;
-        case 2:
-            letter.Y += 1; // down
-            break;
-        case 3:
-            letter.X -= 1; // left
-            break;
-        case 4:
-            letter.X += 1; // right
-            break;
-        }
-        menu_box[letter.Y][letter.X] = move_char;
-        SetConsoleTextAttribute(h, color);
-        SetConsoleCursorPosition(h, letter);
-        cout << ch;
-    }
-
-    void CheckWords()
-    {
-        //Alice
-        if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_A | _A1 &&
-            menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_L | _L1 &&
-            menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_I | _I1 &&
-            menu_box[fields[3].Y][fields[3].X] == Move_Alphabet::_C &&
-            menu_box[fields[4].Y][fields[4].X] == Move_Alphabet::_E)
-        { 
-            WordTriggers::SetColor(DARKGREEN);
-            Sleep(50);
-            CreateThread(0, 0, SecretMusic, 0, 0, 0);
-            Restart();
-        }
-        //Car
-        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_C &&
-                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_A | _A1 &&
-                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_R)
-             {
-                 WordTriggers::SetCar(true);
-                 Sleep(50);
-                 Restart();
-             }
-        //Clear
-        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_C &&
-                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_L | _L1 &&
-                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_E &&
-                 menu_box[fields[3].Y][fields[3].X] == Move_Alphabet::_A | _A1 &&
-                 menu_box[fields[4].Y][fields[4].X] == Move_Alphabet::_R)
-             {
-                 WordTriggers::Clear(true);
-                 Sleep(50);
-                 Restart();
-             }
-        //Key
-        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_K &&
-                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_E &&
-                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_Y)
-             {
-                 WordTriggers::SetKey(true);
-                 Sleep(50);
-                 Restart();
-             }
-        //Air (do nothing)
-        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_A | _A1 &&
-                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_I | _I1 &&
-                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_R)
-             {
-                 Sleep(50);
-                 Restart();
-             }
-        //Wall is air
-        else if (menu_box[fields[0].Y][fields[0].X] == Move_Alphabet::_W &&
-                 menu_box[fields[1].Y][fields[1].X] == Move_Alphabet::_A | _A1 &&
-                 menu_box[fields[2].Y][fields[2].X] == Move_Alphabet::_L | _L1 &&
-                 menu_box[fields[2].Y][fields[3].X] == Move_Alphabet::_L | _L1 &&
-                 menu_box[fields[4].Y][fields[5].X] == Move_Alphabet::_I | _I1 &&
-                 menu_box[fields[5].Y][fields[6].X] == Move_Alphabet::_S &&
-                 menu_box[fields[7].Y][fields[8].X] == Move_Alphabet::_A | _A1 &&
-                 menu_box[fields[8].Y][fields[9].X] == Move_Alphabet::_I | _I1 &&
-                 menu_box[fields[9].Y][fields[10].X] == Move_Alphabet::_R)
-             {
-                 WordTriggers::SetWall(true);
-                 Sleep(50);
-                 Restart();
-             }
-    }
-
-    
 
 public:
 
@@ -332,10 +68,12 @@ public:
                         menu_box[y][x] = Border::BORDER_UP_DOWN; // up and down borders
                     }
 
-                    else if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x == EndWIDTH && y <= EndHEIGHT / 2 || y >= EndHEIGHT / 2 + 4 && x == EndWIDTH && y <= EndHEIGHT)
+                    else if (wall_trigger == false && y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH || y >= StartHEIGHT && x == EndWIDTH && y <= EndHEIGHT / 2 || y >= EndHEIGHT / 2 + 4 && x == EndWIDTH && y <= EndHEIGHT)
                     {
                         menu_box[y][x] = Border::BORDER_LEFT_RIGHT; // left and right borders
                     }
+                    
+                    /*else if (wall_trigger == true && )*/
 
 
                     //if player enter key/keys
@@ -527,7 +265,7 @@ public:
 
                     else
                     {
-                        menu_box[y][x] = Border::EMPTY;  
+                        menu_box[y][x] = Border::EMPTY;
                     }
                 }
                 else
@@ -536,28 +274,10 @@ public:
                 }
             }
         }
-
-        if (wall_trigger)
-        {
-            for (int y = 0; y < HEIGHT; y++)
-            {
-                for (int x = 0; x < WIDTH; x++)
-                {
-                    if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH)
-                    {
-                        COORD NoWall;
-                        NoWall.Y = y;
-                        NoWall.X = x;
-                        SetConsoleCursorPosition(h, NoWall);
-                        menu_box[y][x] = Border::EMPTY;
-                    }
-                }
-            }
-        }
     }
 
 
-    void Show()
+    void Show() override
     {
         system("cls");
         for (int y = 0; y < HEIGHT; y++)
@@ -620,16 +340,16 @@ public:
                 case Move_Alphabet::_L1:// L which can move
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::L;
-                    break; 
+                    break;
                 case Move_Alphabet::_K: // K which can move
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::K;
                     break;
-                case Move_Alphabet::_E: 
+                case Move_Alphabet::_E:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::E;
                     break;
-                case Move_Alphabet::_Y: 
+                case Move_Alphabet::_Y:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::Y;
                     break;
@@ -645,7 +365,7 @@ public:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::C;
                     break;
-                case Move_Alphabet::_W: 
+                case Move_Alphabet::_W:
                     SetConsoleTextAttribute(h, WHITE);
                     cout << (char)Static_Alphabet::W;
                     break;
@@ -682,7 +402,7 @@ public:
         player.SetPosition();
         player.SetColor(Color::BLUE);
         player.PrintEmoji();
-        
+
 
         //for tests
         /*Level2::OpenDoor();*/
@@ -736,15 +456,15 @@ public:
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
                         menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_Y ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_I || 
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_I ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_C || 
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_C ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_W || 
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_W ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_R || 
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_R ||
                         menu_box[player.GetY() - 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_S )
+                        menu_box[player.GetY() - 2][player.GetX()] == Move_Alphabet::_S)
                     {
                         player.SetPosition();
                         player.SetColor(Color::BLUE);
@@ -815,87 +535,87 @@ public:
                     menu_box[player.GetY() + 1][player.GetX()] != Border::CORNER_01 &&
                     menu_box[player.GetY() + 1][player.GetX()] != Door::DOOR)
                 {
-                     if (menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Border::BORDER_UP_DOWN ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_A ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_A1 ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_L ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_L1 ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_K ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_E ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_Y ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_I ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_C ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_W ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_R ||
-                         menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_S)
-                     {
-                         player.SetPosition();
-                         player.SetColor(Color::BLUE);
-                         player.PrintEmoji();
-                         continue;
-                     }
-                     else
-                     {
-                         player.MoveDown();
-                         switch (menu_box[player.GetY()][player.GetX()])
-                         {
-                         case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 2, _A, WHITE);
-                             break;
-                         case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 2, _A1, WHITE);
-                             break;
-                         case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 2, _L, WHITE);
-                             break;
-                         case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 2, _L1, WHITE);
-                             break;
-                         case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 2, _K, WHITE);
-                             break;
-                         case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 2, _E, WHITE);
-                             break;
-                         case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 2, _Y, WHITE);
-                             break;
-                         case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 2, _I, WHITE);
-                             break;
-                         case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 2, _I1, WHITE);
-                             break;
-                         case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 2, _C, WHITE);
-                             break;
-                         case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 2, _W, WHITE);
-                             break;
-                         case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 2, _R, WHITE);
-                             break;
-                         case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 2, _S, WHITE);
-                             break;
-                         case Move_Alphabet::KEY:
-                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 2, KEY, YELLOW);
-                             break;
-                         }
-                     }
+                    if (menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Border::BORDER_UP_DOWN ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_A ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_A1 ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_L ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_L1 ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_K ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_E ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_Y ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_I ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_C ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_W ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_R ||
+                        menu_box[player.GetY() + 1][player.GetX()] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY() + 2][player.GetX()] == Move_Alphabet::_S)
+                    {
+                        player.SetPosition();
+                        player.SetColor(Color::BLUE);
+                        player.PrintEmoji();
+                        continue;
+                    }
+                    else
+                    {
+                        player.MoveDown();
+                        switch (menu_box[player.GetY()][player.GetX()])
+                        {
+                        case Move_Alphabet::_A:
+                            LetterMove(Static_Alphabet::A, coord_A1, 2, _A, WHITE);
+                            break;
+                        case Move_Alphabet::_A1:
+                            LetterMove(Static_Alphabet::A, coord_A2, 2, _A1, WHITE);
+                            break;
+                        case Move_Alphabet::_L:
+                            LetterMove(Static_Alphabet::L, coord_L1, 2, _L, WHITE);
+                            break;
+                        case Move_Alphabet::_L1:
+                            LetterMove(Static_Alphabet::L, coord_L2, 2, _L1, WHITE);
+                            break;
+                        case Move_Alphabet::_K:
+                            LetterMove(Static_Alphabet::K, coord_K, 2, _K, WHITE);
+                            break;
+                        case Move_Alphabet::_E:
+                            LetterMove(Static_Alphabet::E, coord_E, 2, _E, WHITE);
+                            break;
+                        case Move_Alphabet::_Y:
+                            LetterMove(Static_Alphabet::Y, coord_Y, 2, _Y, WHITE);
+                            break;
+                        case Move_Alphabet::_I:
+                            LetterMove(Static_Alphabet::I, coord_I1, 2, _I, WHITE);
+                            break;
+                        case Move_Alphabet::_I1:
+                            LetterMove(Static_Alphabet::I, coord_I2, 2, _I1, WHITE);
+                            break;
+                        case Move_Alphabet::_C:
+                            LetterMove(Static_Alphabet::C, coord_C, 2, _C, WHITE);
+                            break;
+                        case Move_Alphabet::_W:
+                            LetterMove(Static_Alphabet::W, coord_W, 2, _W, WHITE);
+                            break;
+                        case Move_Alphabet::_R:
+                            LetterMove(Static_Alphabet::R, coord_R, 2, _R, WHITE);
+                            break;
+                        case Move_Alphabet::_S:
+                            LetterMove(Static_Alphabet::S, coord_S, 2, _S, WHITE);
+                            break;
+                        case Move_Alphabet::KEY:
+                            LetterMove(Move_Alphabet::_KEY, coord_KEY, 2, KEY, YELLOW);
+                            break;
+                        }
+                    }
                 }
 
 
@@ -906,95 +626,95 @@ public:
                     menu_box[player.GetY()][player.GetX() - 1] != Border::CORNER_01 &&
                     menu_box[player.GetY()][player.GetX() - 1] != Door::DOOR)
                 {
-                     if (menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Border::BORDER_LEFT_RIGHT ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_01 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_02 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_03 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_04 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_A ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_A1 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_L ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_L1 ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_K ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_E ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_Y ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_I ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_C ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_W ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_R ||
-                         menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_S)
-                     {
-                         player.SetPosition();
-                         player.SetColor(Color::BLUE);
-                         player.PrintEmoji();
-                         continue;
-                     }
-                     else
-                     {
-                         player.MoveLeft();
-                         switch (menu_box[player.GetY()][player.GetX()])
-                         {
-                         case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 3, _A, WHITE);
-                             break;
-                         case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 3, _A1, WHITE);
-                             break;
-                         case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 3, _L, WHITE);
-                             break;
-                         case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 3, _L1, WHITE);
-                             break;
-                         case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 3, _K, WHITE);
-                             break;
-                         case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 3, _E, WHITE);
-                             break;
-                         case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 3, _Y, WHITE);
-                             break;
-                         case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 3, _I, WHITE);
-                             break;
-                         case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 3, _I1, WHITE);
-                             break;
-                         case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 3, _C, WHITE);
-                             break;
-                         case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 3, _W, WHITE);
-                             break;
-                         case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 3, _R, WHITE);
-                             break;
-                         case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 3, _S, WHITE);
-                             break;
-                         case Move_Alphabet::KEY:
-                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 3, KEY, YELLOW);
-                             break;
-                         }
-                     }
+                    if (menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Border::BORDER_LEFT_RIGHT ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_01 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_02 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_03 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Border::CORNER_04 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_A ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_A1 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_L ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_L1 ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_K ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_E ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_Y ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_I ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_C ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_W ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_R ||
+                        menu_box[player.GetY()][player.GetX() - 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() - 2] == Move_Alphabet::_S)
+                    {
+                        player.SetPosition();
+                        player.SetColor(Color::BLUE);
+                        player.PrintEmoji();
+                        continue;
+                    }
+                    else
+                    {
+                        player.MoveLeft();
+                        switch (menu_box[player.GetY()][player.GetX()])
+                        {
+                        case Move_Alphabet::_A:
+                            LetterMove(Static_Alphabet::A, coord_A1, 3, _A, WHITE);
+                            break;
+                        case Move_Alphabet::_A1:
+                            LetterMove(Static_Alphabet::A, coord_A2, 3, _A1, WHITE);
+                            break;
+                        case Move_Alphabet::_L:
+                            LetterMove(Static_Alphabet::L, coord_L1, 3, _L, WHITE);
+                            break;
+                        case Move_Alphabet::_L1:
+                            LetterMove(Static_Alphabet::L, coord_L2, 3, _L1, WHITE);
+                            break;
+                        case Move_Alphabet::_K:
+                            LetterMove(Static_Alphabet::K, coord_K, 3, _K, WHITE);
+                            break;
+                        case Move_Alphabet::_E:
+                            LetterMove(Static_Alphabet::E, coord_E, 3, _E, WHITE);
+                            break;
+                        case Move_Alphabet::_Y:
+                            LetterMove(Static_Alphabet::Y, coord_Y, 3, _Y, WHITE);
+                            break;
+                        case Move_Alphabet::_I:
+                            LetterMove(Static_Alphabet::I, coord_I1, 3, _I, WHITE);
+                            break;
+                        case Move_Alphabet::_I1:
+                            LetterMove(Static_Alphabet::I, coord_I2, 3, _I1, WHITE);
+                            break;
+                        case Move_Alphabet::_C:
+                            LetterMove(Static_Alphabet::C, coord_C, 3, _C, WHITE);
+                            break;
+                        case Move_Alphabet::_W:
+                            LetterMove(Static_Alphabet::W, coord_W, 3, _W, WHITE);
+                            break;
+                        case Move_Alphabet::_R:
+                            LetterMove(Static_Alphabet::R, coord_R, 3, _R, WHITE);
+                            break;
+                        case Move_Alphabet::_S:
+                            LetterMove(Static_Alphabet::S, coord_S, 3, _S, WHITE);
+                            break;
+                        case Move_Alphabet::KEY:
+                            LetterMove(Move_Alphabet::_KEY, coord_KEY, 3, KEY, YELLOW);
+                            break;
+                        }
+                    }
                 }
 
                 else if (code == KeyCode::RIGHT && menu_box[player.GetY()][player.GetX() + 1] != Border::BORDER_LEFT_RIGHT &&
@@ -1004,95 +724,95 @@ public:
                     menu_box[player.GetY()][player.GetX() + 1] != Border::CORNER_01 &&
                     menu_box[player.GetY()][player.GetX() + 1] != Door::DOOR)
                 {
-                     if (menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Border::BORDER_LEFT_RIGHT ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_01 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_02 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_03 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_04 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_A ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_A1 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_L ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_L1 ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_K ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_E ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_Y ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_I ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_C ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_W ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_R ||
-                         menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
-                         menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_S)
-                     {
-                         player.SetPosition();
-                         player.SetColor(Color::BLUE);
-                         player.PrintEmoji();
-                         continue;
-                     }
-                     else
-                     {
-                         player.MoveRight();
-                         switch (menu_box[player.GetY()][player.GetX()])
-                         {
-                         case Move_Alphabet::_A:
-                             LetterMove(Static_Alphabet::A, coord_A1, 4, _A, WHITE);
-                             break;
-                         case Move_Alphabet::_A1:
-                             LetterMove(Static_Alphabet::A, coord_A2, 4, _A1, WHITE);
-                             break;
-                         case Move_Alphabet::_L:
-                             LetterMove(Static_Alphabet::L, coord_L1, 4, _L, WHITE);
-                             break;
-                         case Move_Alphabet::_L1:
-                             LetterMove(Static_Alphabet::L, coord_L2, 4, _L1, WHITE);
-                             break;
-                         case Move_Alphabet::_K:
-                             LetterMove(Static_Alphabet::K, coord_K, 4, _K, WHITE);
-                             break;
-                         case Move_Alphabet::_E:
-                             LetterMove(Static_Alphabet::E, coord_E, 4, _E, WHITE);
-                             break;
-                         case Move_Alphabet::_Y:
-                             LetterMove(Static_Alphabet::Y, coord_Y, 4, _Y, WHITE);
-                             break;
-                         case Move_Alphabet::_I:
-                             LetterMove(Static_Alphabet::I, coord_I1, 4, _I, WHITE);
-                             break;
-                         case Move_Alphabet::_I1:
-                             LetterMove(Static_Alphabet::I, coord_I2, 4, _I1, WHITE);
-                             break;
-                         case Move_Alphabet::_C:
-                             LetterMove(Static_Alphabet::C, coord_C, 4, _C, WHITE);
-                             break;
-                         case Move_Alphabet::_W:
-                             LetterMove(Static_Alphabet::W, coord_W, 4, _W, WHITE);
-                             break;
-                         case Move_Alphabet::_R:
-                             LetterMove(Static_Alphabet::R, coord_R, 4, _R, WHITE);
-                             break;
-                         case Move_Alphabet::_S:
-                             LetterMove(Static_Alphabet::S, coord_S, 4, _S, WHITE);
-                             break;
-                         case Move_Alphabet::KEY:
-                             LetterMove(Move_Alphabet::_KEY, coord_KEY, 4, KEY, YELLOW);
-                             break;
-                         }
-                     }
+                    if (menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Border::BORDER_LEFT_RIGHT ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_01 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_02 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_03 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Border::CORNER_04 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_A ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_A1 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_L ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_L1 ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_K ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_E ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_Y ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_I ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_C ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_W ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_R ||
+                        menu_box[player.GetY()][player.GetX() + 1] == Move_Alphabet::_A | _A1 | _L | _L1 | _K | _E | _Y | _I | _C | _W | _R | _S &&
+                        menu_box[player.GetY()][player.GetX() + 2] == Move_Alphabet::_S)
+                    {
+                        player.SetPosition();
+                        player.SetColor(Color::BLUE);
+                        player.PrintEmoji();
+                        continue;
+                    }
+                    else
+                    {
+                        player.MoveRight();
+                        switch (menu_box[player.GetY()][player.GetX()])
+                        {
+                        case Move_Alphabet::_A:
+                            LetterMove(Static_Alphabet::A, coord_A1, 4, _A, WHITE);
+                            break;
+                        case Move_Alphabet::_A1:
+                            LetterMove(Static_Alphabet::A, coord_A2, 4, _A1, WHITE);
+                            break;
+                        case Move_Alphabet::_L:
+                            LetterMove(Static_Alphabet::L, coord_L1, 4, _L, WHITE);
+                            break;
+                        case Move_Alphabet::_L1:
+                            LetterMove(Static_Alphabet::L, coord_L2, 4, _L1, WHITE);
+                            break;
+                        case Move_Alphabet::_K:
+                            LetterMove(Static_Alphabet::K, coord_K, 4, _K, WHITE);
+                            break;
+                        case Move_Alphabet::_E:
+                            LetterMove(Static_Alphabet::E, coord_E, 4, _E, WHITE);
+                            break;
+                        case Move_Alphabet::_Y:
+                            LetterMove(Static_Alphabet::Y, coord_Y, 4, _Y, WHITE);
+                            break;
+                        case Move_Alphabet::_I:
+                            LetterMove(Static_Alphabet::I, coord_I1, 4, _I, WHITE);
+                            break;
+                        case Move_Alphabet::_I1:
+                            LetterMove(Static_Alphabet::I, coord_I2, 4, _I1, WHITE);
+                            break;
+                        case Move_Alphabet::_C:
+                            LetterMove(Static_Alphabet::C, coord_C, 4, _C, WHITE);
+                            break;
+                        case Move_Alphabet::_W:
+                            LetterMove(Static_Alphabet::W, coord_W, 4, _W, WHITE);
+                            break;
+                        case Move_Alphabet::_R:
+                            LetterMove(Static_Alphabet::R, coord_R, 4, _R, WHITE);
+                            break;
+                        case Move_Alphabet::_S:
+                            LetterMove(Static_Alphabet::S, coord_S, 4, _S, WHITE);
+                            break;
+                        case Move_Alphabet::KEY:
+                            LetterMove(Move_Alphabet::_KEY, coord_KEY, 4, KEY, YELLOW);
+                            break;
+                        }
+                    }
                 }
                 //level restart if letter stuck
                 else if (code == KeyCode::ENTER)
@@ -1106,7 +826,7 @@ public:
                 player.PrintEmoji();
 
                 CheckWords();
-                
+
                 if (coord_KEY.X == EndWIDTH - 7)
                 {
                     OpenDoor();
@@ -1120,26 +840,13 @@ public:
                     SetCar(false);
                     Clear(false);
                     SetKey(false);
-                    for (int y = 0; y < HEIGHT; y++)
-                    {
-                        for (int x = 0; x < WIDTH; x++)
-                        {
-                            if (y >= StartHEIGHT && x == StartWIDTH && y <= EndWIDTH)
-                            {
-                                COORD NoWall;
-                                NoWall.Y = y;
-                                NoWall.X = x;
-                                SetConsoleCursorPosition(h, NoWall);
-                                menu_box[y][x] = LevelBox::LEVEL_BORDER_LEFT_RIGHT;
-                            }
-                        }
-                    }
                     SetWall(false);
+                    
                     menu_box[coord_KEY.X][coord_KEY.Y] = Border::EMPTY;
                     SetConsoleCursorPosition(h, coord_KEY);
                     cout << (char)Border::EMPTY;
                     break;
-                } 
+                }
             }
         }
     }
